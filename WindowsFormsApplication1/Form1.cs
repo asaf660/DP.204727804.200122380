@@ -77,7 +77,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void buttonLogin_Click_1(object sender, EventArgs e)
+        private void buttonLogin_Click(object sender, EventArgs e)
         {
             loginAndInit();
         }
