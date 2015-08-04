@@ -48,7 +48,7 @@
             // 
             // UserPictureBox
             // 
-            this.UserPictureBox.Location = new System.Drawing.Point(29, 51);
+            this.UserPictureBox.Location = new System.Drawing.Point(29, 93);
             this.UserPictureBox.Name = "UserPictureBox";
             this.UserPictureBox.Size = new System.Drawing.Size(133, 110);
             this.UserPictureBox.TabIndex = 1;
@@ -61,7 +61,7 @@
             this.Friend_list.Name = "Friend_list";
             this.Friend_list.Size = new System.Drawing.Size(173, 147);
             this.Friend_list.TabIndex = 2;
-            this.Friend_list.SelectedIndexChanged += new System.EventHandler(this.Friend_list_SelectedIndexChanged);
+            this.Friend_list.SelectedIndexChanged += new System.EventHandler(this.friend_list_SelectedIndexChanged);
             // 
             // linkLabel1
             // 
