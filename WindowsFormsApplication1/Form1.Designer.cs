@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBoxAutomaticLogin = new System.Windows.Forms.CheckBox();
             this.UserPictureBox = new System.Windows.Forms.PictureBox();
             this.Friend_list = new System.Windows.Forms.ListBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -36,15 +36,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // checkBox1
+            // checkBoxAutomaticLogin
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(117, 28);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(80, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxAutomaticLogin.AutoSize = true;
+            this.checkBoxAutomaticLogin.Location = new System.Drawing.Point(117, 28);
+            this.checkBoxAutomaticLogin.Name = "checkBoxAutomaticLogin";
+            this.checkBoxAutomaticLogin.Size = new System.Drawing.Size(98, 17);
+            this.checkBoxAutomaticLogin.TabIndex = 0;
+            this.checkBoxAutomaticLogin.Text = "Automatic login";
+            this.checkBoxAutomaticLogin.UseVisualStyleBackColor = true;
             // 
             // UserPictureBox
             // 
@@ -93,7 +93,7 @@
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.Friend_list);
             this.Controls.Add(this.UserPictureBox);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.checkBoxAutomaticLogin);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).EndInit();
@@ -104,7 +104,7 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBoxAutomaticLogin;
         private System.Windows.Forms.PictureBox UserPictureBox;
         private System.Windows.Forms.ListBox Friend_list;
         private System.Windows.Forms.LinkLabel linkLabel1;
