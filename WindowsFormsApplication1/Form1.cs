@@ -54,7 +54,7 @@ namespace WindowsFormsApplication1
             /// You can then save the result.AccessToken for future auto-connect to this user:
             LoginResult result = FacebookService.Login("511256585691702", /// (Asaf Haim & Asaf Bartov app)
                                                        "user_about_me", "user_friends", "publish_actions", "user_events", "user_posts", 
-                                                       "user_photos", "user_status", "user_birthday", "user_likes", "rsvp_event");
+                                                       "user_photos", "user_status", "user_birthday", "user_likes", "rsvp_event", "user_groups");
 
             // These are NOT the complete list of permissions. Other permissions for example:
             // "user_birthday", "user_education_history", "user_hometown", "user_likes","user_location","user_relationships","user_relationship_details","user_religion_politics", "user_videos", "user_website", "user_work_history", "email","read_insights","rsvp_event","manage_pages"
@@ -144,17 +144,37 @@ namespace WindowsFormsApplication1
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            getCongtatulatingFriends();
+            FacebookObjectCollection<User> myFriends = m_LoggedInUser.Friends;
+            foreach (User friend in myFriends)
+            {
+                int friendSimilarityNum = 0;
+                try
+                {
+                    FacebookObjectCollection<Group> friendGroups = friend.Groups;
+                FacebookObjectCollection<Group> myGroups = m_LoggedInUser.Groups;
+                foreach (Group myGroup in myGroups)
+                {
+                    foreach (Group friendGroup in friendGroups)
+                    {
+                        if (friendGroup == myGroup)
+                        {
+                            friendSimilarityNum++;
+                        }
+                    }
+                }
+                string friendSimilarity = friend.FirstName;
+                friendSimilarity += friendSimilarityNum.ToString();
+                Friend_list.Items.Add(friendSimilarity);
+                }
+                catch (Exception exs)
+                {
+                  
+                }
+            }
         }
 
         private void friend_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void getCongtatulatingFriends()
-        {
-            List<String> congratulatingFriends = new List<String>();
 
         }
 

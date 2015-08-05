@@ -16,3 +16,13 @@ E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsF
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\bin\Debug\Facebook.dll
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\bin\Debug\FbGraphApiWrapper.dll
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\asaf\Desktop\האקדמית תל אביב יפו\Design patterns\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
