@@ -13,6 +13,6 @@ E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsF
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
-E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+E:\Documents\Visual Studio 2013\Projects\chore 1\DP.204727804.200122380\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.mainForm.resources
