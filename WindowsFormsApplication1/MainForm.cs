@@ -6,19 +6,20 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using System.IO;
 using System.Windows.Forms;
 using FacebookWrapper.ObjectModel;
 using FacebookWrapper;
-using System.IO;
 
 namespace WindowsFormsApplication1
 {
     public partial class mainForm : Form
     {
-        public delegate void LoginButtonActionDelegate();
         private User m_LoggedInUser;
         private LoginButtonActionDelegate m_linkAction;
 
+        public delegate void LoginButtonActionDelegate();
+        
         public mainForm()
         {
             InitializeComponent();
@@ -49,17 +50,14 @@ namespace WindowsFormsApplication1
 
         private void tryLogin()
         {
-            /// Use the FacebookService.Login method to display the login form to any user who wish to use this application.
-            /// You can then save the result.AccessToken for future auto-connect to this user:
             LoginResult result = FacebookService.Login("511256585691702", /// (Asaf Haim & Asaf Bartov app)
-                                                       "user_about_me", "user_friends", "publish_actions", "user_events", "user_posts", 
-                                                       "user_photos", "user_status", "user_birthday", "user_likes", "rsvp_event", "read_stream");
-
-            // These are NOT the complete list of permissions. Other permissions for example:
-            // "user_birthday", "user_education_history", "user_hometown", "user_likes","user_location","user_relationships","user_relationship_details","user_religion_politics", "user_videos", "user_website", "user_work_history", "email","read_insights","rsvp_event","manage_pages"
-            // The documentation regarding facebook login and permissions can be found here: 
-            // v2.4: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
-
+                                                       "user_about_me",
+                                                       "user_friends",
+                                                       "user_events",
+                                                       "user_posts",
+                                                       "user_photos",
+                                                       "user_status",
+                                                       "user_likes");
             loginWithLoginResult(result);
         }
 
@@ -116,16 +114,6 @@ namespace WindowsFormsApplication1
             }*/
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void friend_list_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             m_linkAction();
@@ -161,6 +149,55 @@ namespace WindowsFormsApplication1
         private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             AppConfig.SaveToFile();
+        }
+
+        private void buttonActivityData_Click(object sender, EventArgs e)
+        {
+            BackgroundWorker fetchActivitiesBackgroundWorker = new BackgroundWorker();
+            fetchActivitiesBackgroundWorker.DoWork += fetchPostActivityBackgroundWorkerDoWork;
+            fetchActivitiesBackgroundWorker.RunWorkerCompleted += fetchPostActivityBackgroundWorkerRunWorkerCompleted;
+            progressBarPostsActivity.Visible = true;
+            fetchActivitiesBackgroundWorker.RunWorkerAsync();
+        }
+
+        private void fetchPostActivityBackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressBarPostsActivity.Visible = false;
+            panelPostActivityData.Visible = true;
+        }
+
+        private void fetchPostActivityBackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        {
+            fetchPostActivity();
+        }
+
+        private void fetchPostActivity()
+        {
+            Func<Post, bool> statusPredicate = new Func<Post, bool>(statusPostPredicate);
+            Post lastPhotoUploadPost = m_LoggedInUser.Posts.First<Post>(photoPostPredicate);
+            Post lastVideoPost = m_LoggedInUser.Posts.First<Post>(videoPostPredicate);
+            Post lastStatusPost = m_LoggedInUser.Posts.First<Post>(statusPredicate);
+            BeginInvoke((MethodInvoker)delegate
+            {
+                labelLastStatusValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastStatusPost.CreatedTime);
+                labelLastPhotoValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastPhotoUploadPost.CreatedTime);
+                labelLastVideoValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastVideoPost.CreatedTime);
+            });
+        }
+
+        private bool statusPostPredicate(Post i_Post)
+        {
+            return !string.IsNullOrEmpty(i_Post.Message);
+        }
+
+        private bool photoPostPredicate(Post i_Post)
+        {
+            return i_Post.Type == Post.eType.photo;
+        }
+
+        private bool videoPostPredicate(Post i_Post)
+        {
+            return i_Post.Type == Post.eType.video;
         }
     }
 }

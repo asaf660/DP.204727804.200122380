@@ -7,27 +7,14 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Serialization;
 
-
 namespace WindowsFormsApplication1
 {
     [Serializable]
     public sealed class AppConfig : ISerializable
     {
-        public string LastAccessToken { get; set; }
-        public bool AutoConnect { get; set; }
-        public Point LastWindowLocation { get; set; }
-        public Size LastWindowSize { get; set; }
         private static readonly string sr_ConfigFile = "config.cfg";
+        private static readonly object sr_CreationLockContext = new object();
         private static AppConfig s_Instance;
-        private static readonly object sr_CreationLockContext = new Object();
-
-        private AppConfig()
-        {
-            LastAccessToken = "";
-            AutoConnect = true;
-            LastWindowSize = new Size(500, 500);
-            LastWindowLocation = new Point(0, 0);
-        }
 
         public static AppConfig Instance
         {
@@ -46,6 +33,22 @@ namespace WindowsFormsApplication1
 
                 return s_Instance;
             }
+        }
+
+        public string LastAccessToken { get; set; }
+
+        public bool AutoConnect { get; set; }
+
+        public Point LastWindowLocation { get; set; }
+
+        public Size LastWindowSize { get; set; }
+
+        private AppConfig()
+        {
+            LastAccessToken = string.Empty;
+            AutoConnect = true;
+            LastWindowSize = new Size(500, 500);
+            LastWindowLocation = new Point(0, 0);
         }
 
         private static AppConfig LoadFromFile()
