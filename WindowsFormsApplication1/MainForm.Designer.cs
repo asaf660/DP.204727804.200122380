@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApplication1
 {
-    partial class mainForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -182,7 +182,7 @@
             // 
             // mainFormBindingSource
             // 
-            this.mainFormBindingSource.DataSource = typeof(WindowsFormsApplication1.mainForm);
+            this.mainFormBindingSource.DataSource = typeof(WindowsFormsApplication1.MainForm);
             // 
             // mainForm
             // 
