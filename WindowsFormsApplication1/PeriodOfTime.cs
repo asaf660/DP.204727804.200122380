@@ -45,7 +45,7 @@ namespace WindowsFormsApplication1
             }
             else if (timeSpan.Days >= 1)
             {
-                switch (timeSpan.Days) 
+                switch (timeSpan.Days)
                 {
                     case 1:
                         periodString = string.Format("yesterday on {0}:{1}", i_SinceDate.Hour, i_SinceDate.Minute);
@@ -57,6 +57,21 @@ namespace WindowsFormsApplication1
                         break;
                     default:
                         periodString = string.Format("{0} days ago", timeSpan.Days);
+                        break;
+                }
+            }
+            else
+            {
+                switch (timeSpan.Minutes)
+                {
+                    case 0:
+                        periodString = "less than a minute ago";
+                        break;
+                    case 1:
+                        periodString = "1 minute ago";
+                        break;
+                    default:
+                        periodString = string.Format("{0} minutes ago", timeSpan.Minutes);
                         break;
                 }
             }
