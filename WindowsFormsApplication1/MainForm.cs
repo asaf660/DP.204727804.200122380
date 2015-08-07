@@ -13,14 +13,14 @@ using FacebookWrapper;
 
 namespace WindowsFormsApplication1
 {
-    public partial class mainForm : Form
+    public partial class MainForm : Form
     {
         private User m_LoggedInUser;
         private LoginButtonActionDelegate m_linkAction;
 
         public delegate void LoginButtonActionDelegate();
         
-        public mainForm()
+        public MainForm()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
