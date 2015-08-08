@@ -52,14 +52,14 @@ namespace WindowsFormsApplication1
         private void tryLogin()
         {
             LoginResult result = FacebookService.Login("511256585691702", 
-	    					       "user_status", 
-						       "user_birthday", 
-						       "user_about_me", 
-						       "user_friends", 
-						       "publish_actions", 
-						       "user_events", 
-						       "user_posts", 
-						       "user_photos" );  
+	    					                           "user_status", 
+						                               "user_birthday", 
+						                               "user_about_me", 
+						                               "user_friends", 
+						                               "publish_actions", 
+						                               "user_events", 
+						                               "user_posts", 
+						                               "user_photos" );  
             loginWithLoginResult(result);
         }
 
@@ -280,11 +280,6 @@ namespace WindowsFormsApplication1
         private void GetCongtatulatingFriends()
         {
             List<string> congratulatingFriends = new List<string>();
-        }
-
-        private void buttonLogin_Click_1(object sender, EventArgs e)
-        {
-            this.loginAndInit();
         }
 
         private void NamesPerChosenYear_SelectedIndexChanged(object sender, EventArgs e)

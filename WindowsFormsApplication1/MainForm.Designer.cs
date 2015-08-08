@@ -29,14 +29,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
+            this.components = new System.ComponentModel.Container();
             this.checkBoxAutomaticLogin = new System.Windows.Forms.CheckBox();
             this.UserPictureBox = new System.Windows.Forms.PictureBox();
             this.Friends_year_list = new System.Windows.Forms.ListBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.buttonLogin = new System.Windows.Forms.Button();
-			this.buttonActivityData = new System.Windows.Forms.Button();
+            this.buttonActivityData = new System.Windows.Forms.Button();
             this.panelUserDataPanel = new System.Windows.Forms.Panel();
+            this.progressBarPostsActivity = new System.Windows.Forms.ProgressBar();
             this.panelPostActivityData = new System.Windows.Forms.Panel();
             this.labelLastVideoValue = new System.Windows.Forms.Label();
             this.labelLastVideo = new System.Windows.Forms.Label();
@@ -44,11 +45,10 @@
             this.labelLastPhoto = new System.Windows.Forms.Label();
             this.labelLastStatusValue = new System.Windows.Forms.Label();
             this.labelLastStatus = new System.Windows.Forms.Label();
-            this.progressBarPostsActivity = new System.Windows.Forms.ProgressBar();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.NamesPerChosenYear = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).BeginInit();
-			this.panelUserDataPanel.SuspendLayout();
+            this.panelUserDataPanel.SuspendLayout();
             this.panelPostActivityData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -56,13 +56,13 @@
             // checkBoxAutomaticLogin
             // 
             this.checkBoxAutomaticLogin.AutoSize = true;
-			this.checkBoxAutomaticLogin.Location = new System.Drawing.Point(12, 52);
-			this.checkBoxAutomaticLogin.Name = "checkBoxAutomaticLogin";
-			this.checkBoxAutomaticLogin.Size = new System.Drawing.Size(98, 17);
-			this.checkBoxAutomaticLogin.TabIndex = 0;
-			this.checkBoxAutomaticLogin.Text = "Automatic login";
-			this.checkBoxAutomaticLogin.UseVisualStyleBackColor = true;
-			this.checkBoxAutomaticLogin.CheckedChanged += new System.EventHandler(this.checkBoxAutomaticLogin_CheckedChanged);
+            this.checkBoxAutomaticLogin.Location = new System.Drawing.Point(12, 52);
+            this.checkBoxAutomaticLogin.Name = "checkBoxAutomaticLogin";
+            this.checkBoxAutomaticLogin.Size = new System.Drawing.Size(98, 17);
+            this.checkBoxAutomaticLogin.TabIndex = 0;
+            this.checkBoxAutomaticLogin.Text = "Automatic login";
+            this.checkBoxAutomaticLogin.UseVisualStyleBackColor = true;
+            this.checkBoxAutomaticLogin.CheckedChanged += new System.EventHandler(this.checkBoxAutomaticLogin_CheckedChanged);
             // 
             // UserPictureBox
             // 
@@ -75,7 +75,7 @@
             // Friends_year_list
             // 
             this.Friends_year_list.FormattingEnabled = true;
-            this.Friends_year_list.Location = new System.Drawing.Point(298, 56);
+            this.Friends_year_list.Location = new System.Drawing.Point(319, 38);
             this.Friends_year_list.Name = "Friends_year_list";
             this.Friends_year_list.Size = new System.Drawing.Size(173, 147);
             this.Friends_year_list.TabIndex = 2;
@@ -84,7 +84,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(295, 40);
+            this.linkLabel1.Location = new System.Drawing.Point(316, 11);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(124, 13);
             this.linkLabel1.TabIndex = 4;
@@ -101,12 +101,12 @@
             this.buttonLogin.Text = "Login";
             this.buttonLogin.UseVisualStyleBackColor = true;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
-			// 
+            // 
             // buttonActivityData
             // 
-            this.buttonActivityData.Location = new System.Drawing.Point(118, 3);
+            this.buttonActivityData.Location = new System.Drawing.Point(16, 103);
             this.buttonActivityData.Name = "buttonActivityData";
-            this.buttonActivityData.Size = new System.Drawing.Size(124, 29);
+            this.buttonActivityData.Size = new System.Drawing.Size(82, 23);
             this.buttonActivityData.TabIndex = 6;
             this.buttonActivityData.Text = "View Posts Activity";
             this.buttonActivityData.UseVisualStyleBackColor = true;
@@ -114,15 +114,28 @@
             // 
             // panelUserDataPanel
             // 
-            this.panelUserDataPanel.Controls.Add(this.progressBarPostsActivity);
             this.panelUserDataPanel.Controls.Add(this.panelPostActivityData);
             this.panelUserDataPanel.Controls.Add(this.UserPictureBox);
+            this.panelUserDataPanel.Controls.Add(this.NamesPerChosenYear);
             this.panelUserDataPanel.Controls.Add(this.buttonActivityData);
+            this.panelUserDataPanel.Controls.Add(this.linkLabel1);
+            this.panelUserDataPanel.Controls.Add(this.Friends_year_list);
             this.panelUserDataPanel.Location = new System.Drawing.Point(12, 91);
             this.panelUserDataPanel.Name = "panelUserDataPanel";
-            this.panelUserDataPanel.Size = new System.Drawing.Size(492, 217);
+            this.panelUserDataPanel.Size = new System.Drawing.Size(492, 212);
             this.panelUserDataPanel.TabIndex = 7;
             this.panelUserDataPanel.Visible = false;
+            // 
+            // progressBarPostsActivity
+            // 
+            this.progressBarPostsActivity.Location = new System.Drawing.Point(131, 40);
+            this.progressBarPostsActivity.MarqueeAnimationSpeed = 50;
+            this.progressBarPostsActivity.Name = "progressBarPostsActivity";
+            this.progressBarPostsActivity.Size = new System.Drawing.Size(123, 29);
+            this.progressBarPostsActivity.Step = 5;
+            this.progressBarPostsActivity.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBarPostsActivity.TabIndex = 8;
+            this.progressBarPostsActivity.Visible = false;
             // 
             // panelPostActivityData
             // 
@@ -132,9 +145,9 @@
             this.panelPostActivityData.Controls.Add(this.labelLastPhoto);
             this.panelPostActivityData.Controls.Add(this.labelLastStatusValue);
             this.panelPostActivityData.Controls.Add(this.labelLastStatus);
-            this.panelPostActivityData.Location = new System.Drawing.Point(119, 39);
+            this.panelPostActivityData.Location = new System.Drawing.Point(3, 146);
             this.panelPostActivityData.Name = "panelPostActivityData";
-            this.panelPostActivityData.Size = new System.Drawing.Size(199, 100);
+            this.panelPostActivityData.Size = new System.Drawing.Size(199, 60);
             this.panelPostActivityData.TabIndex = 7;
             this.panelPostActivityData.Visible = false;
             // 
@@ -192,43 +205,36 @@
             this.labelLastStatus.TabIndex = 0;
             this.labelLastStatus.Text = "Last Status:";
             // 
-            // progressBarPostsActivity
-            // 
-            this.progressBarPostsActivity.Location = new System.Drawing.Point(248, 3);
-            this.progressBarPostsActivity.MarqueeAnimationSpeed = 50;
-            this.progressBarPostsActivity.Name = "progressBarPostsActivity";
-            this.progressBarPostsActivity.Size = new System.Drawing.Size(111, 29);
-            this.progressBarPostsActivity.Step = 5;
-            this.progressBarPostsActivity.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.progressBarPostsActivity.TabIndex = 8;
-            this.progressBarPostsActivity.Visible = false;
-            // 
             // NamesPerChosenYear
             // 
             this.NamesPerChosenYear.FormattingEnabled = true;
-            this.NamesPerChosenYear.Location = new System.Drawing.Point(194, 136);
+            this.NamesPerChosenYear.Location = new System.Drawing.Point(220, 38);
             this.NamesPerChosenYear.Name = "NamesPerChosenYear";
             this.NamesPerChosenYear.Size = new System.Drawing.Size(93, 56);
             this.NamesPerChosenYear.TabIndex = 6;
             this.NamesPerChosenYear.SelectedIndexChanged += new System.EventHandler(this.NamesPerChosenYear_SelectedIndexChanged);
             // 
-            // mainForm
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(516, 320);
-			this.Controls.Add(this.checkBoxAutomaticLogin);
-            this.Controls.Add(this.NamesPerChosenYear);
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ClientSize = new System.Drawing.Size(516, 307);
+            this.Controls.Add(this.progressBarPostsActivity);
+            this.Controls.Add(this.checkBoxAutomaticLogin);
             this.Controls.Add(this.buttonLogin);
-			this.Controls.Add(this.panelUserDataPanel);
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
-			this.LocationChanged += new System.EventHandler(this.mainForm_LocationChanged);
-			this.SizeChanged += new System.EventHandler(this.mainForm_SizeChanged);
-			this.Name = "mainForm";
-			this.Text = "Design Patterns Facebook app";
-            this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.Friends_year_list);
+            this.Controls.Add(this.panelUserDataPanel);
+            this.Name = "MainForm";
+            this.Text = "Design Patterns Facebook app";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
+            this.LocationChanged += new System.EventHandler(this.mainForm_LocationChanged);
+            this.SizeChanged += new System.EventHandler(this.mainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).EndInit();
+            this.panelUserDataPanel.ResumeLayout(false);
+            this.panelUserDataPanel.PerformLayout();
+            this.panelPostActivityData.ResumeLayout(false);
+            this.panelPostActivityData.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
