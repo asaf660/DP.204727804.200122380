@@ -20,15 +20,15 @@ namespace WindowsFormsApplication1
         public Dictionary<int, List<User>> m_FriendsBornPerYear = new Dictionary<int, List<User>>();
 
         public delegate void LoginButtonActionDelegate();
-        
+
         public MainForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
             this.WindowState = FormWindowState.Normal;
-            hideUserData();
+            this.hideUserData();
             FacebookWrapper.FacebookService.s_CollectionLimit = 10000;
-            m_linkAction = new LoginButtonActionDelegate(tryLogin);
+            this.m_linkAction = new LoginButtonActionDelegate(this.tryLogin);
             this.Size = AppConfig.Instance.LastWindowSize;
             this.Location = AppConfig.Instance.LastWindowLocation;
             checkBoxAutomaticLogin.Checked = AppConfig.Instance.AutoConnect;
@@ -39,7 +39,7 @@ namespace WindowsFormsApplication1
                 {
                     try
                     {
-                        loginWithLoginResult(FacebookService.Connect(accessToken));
+                        this.loginWithLoginResult(FacebookService.Connect(accessToken));
                     }
                     catch (Exception e)
                     {
@@ -51,16 +51,17 @@ namespace WindowsFormsApplication1
 
         private void tryLogin()
         {
-            LoginResult result = FacebookService.Login("511256585691702", 
-	    					                           "user_status", 
-						                               "user_birthday", 
-						                               "user_about_me", 
-						                               "user_friends", 
-						                               "publish_actions", 
-						                               "user_events", 
-						                               "user_posts", 
-						                               "user_photos" );  
-            loginWithLoginResult(result);
+            LoginResult result = FacebookService.Login(
+                                                        "511256585691702",
+                                                       "user_status",
+                                                       "user_birthday",
+                                                       "user_about_me",
+                                                       "user_friends",
+                                                       "publish_actions",
+                                                       "user_events",
+                                                       "user_posts",
+                                                       "user_photos");
+            this.loginWithLoginResult(result);
         }
 
         private void loginWithLoginResult(LoginResult i_LoginResult)
@@ -71,9 +72,9 @@ namespace WindowsFormsApplication1
                 {
                     AppConfig.Instance.LastAccessToken = i_LoginResult.AccessToken;
                     checkBoxAutomaticLogin.Visible = false;
-                    m_LoggedInUser = i_LoginResult.LoggedInUser;
-                    fetchUserInfo();
-                    switchToLogoutButton();
+                    this.m_LoggedInUser = i_LoginResult.LoggedInUser;
+                    this.fetchUserInfo();
+                    this.switchToLogoutButton();
                 }
                 else
                 {
@@ -82,13 +83,13 @@ namespace WindowsFormsApplication1
             }
         }
 
-		private void logout()
+        private void logout()
         {
-            clearUserData();
-            hideUserData();
+            this.clearUserData();
+            this.hideUserData();
             FacebookService.Logout(null);
-            checkBoxAutomaticLogin.Visible = true;
-            switchToLoginButton();
+            this.checkBoxAutomaticLogin.Visible = true;
+            this.switchToLoginButton();
         }
 
         private void clearUserData()
@@ -108,28 +109,24 @@ namespace WindowsFormsApplication1
 
         private void fetchUserInfo()
         {
-            showUserData();
-            UserPictureBox.LoadAsync(m_LoggedInUser.PictureNormalURL);
-            /*if (m_LoggedInUser.Statuses.Count > 0)
-            {
-                textBoxStatus.Text = m_LoggedInUser.Statuses[0].Message; 
-            }*/
+            this.showUserData();
+            this.UserPictureBox.LoadAsync(this.m_LoggedInUser.PictureNormalURL);
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            m_linkAction();
+            this.m_linkAction();
         }
 
         private void switchToLoginButton()
         {
-            m_linkAction = tryLogin;
+            this.m_linkAction = this.tryLogin;
             buttonLogin.Text = "Login";
         }
 
         private void switchToLogoutButton()
         {
-            m_linkAction = logout;
+            this.m_linkAction = this.logout;
             buttonLogin.Text = "Logout";
         }
 
@@ -156,8 +153,8 @@ namespace WindowsFormsApplication1
         private void buttonActivityData_Click(object sender, EventArgs e)
         {
             BackgroundWorker fetchActivitiesBackgroundWorker = new BackgroundWorker();
-            fetchActivitiesBackgroundWorker.DoWork += fetchPostActivityBackgroundWorkerDoWork;
-            fetchActivitiesBackgroundWorker.RunWorkerCompleted += fetchPostActivityBackgroundWorkerRunWorkerCompleted;
+            fetchActivitiesBackgroundWorker.DoWork += this.fetchPostActivityBackgroundWorkerDoWork;
+            fetchActivitiesBackgroundWorker.RunWorkerCompleted += this.fetchPostActivityBackgroundWorkerRunWorkerCompleted;
             progressBarPostsActivity.Visible = true;
             fetchActivitiesBackgroundWorker.RunWorkerAsync();
         }
@@ -170,16 +167,16 @@ namespace WindowsFormsApplication1
 
         private void fetchPostActivityBackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            fetchPostActivity();
+            this.fetchPostActivity();
         }
 
         private void fetchPostActivity()
         {
-            Func<Post, bool> statusPredicate = new Func<Post, bool>(statusPostPredicate);
-            Post lastPhotoUploadPost = m_LoggedInUser.Posts.First<Post>(photoPostPredicate);
-            Post lastVideoPost = m_LoggedInUser.Posts.First<Post>(videoPostPredicate);
-            Post lastStatusPost = m_LoggedInUser.Posts.First<Post>(statusPredicate);
-            BeginInvoke((MethodInvoker)delegate
+            Func<Post, bool> statusPredicate = new Func<Post, bool>(this.statusPostPredicate);
+            Post lastPhotoUploadPost = this.m_LoggedInUser.Posts.First<Post>(this.photoPostPredicate);
+            Post lastVideoPost = this.m_LoggedInUser.Posts.First<Post>(this.videoPostPredicate);
+            Post lastStatusPost = this.m_LoggedInUser.Posts.First<Post>(statusPredicate);
+            this.BeginInvoke((MethodInvoker)delegate
             {
                 labelLastStatusValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastStatusPost.CreatedTime);
                 labelLastPhotoValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastPhotoUploadPost.CreatedTime);
@@ -201,8 +198,8 @@ namespace WindowsFormsApplication1
         {
             return i_Post.Type == Post.eType.video;
         }
-		
-		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Dictionary<int, List<User>> o_FriendsBornPerYear = new Dictionary<int, List<User>>();
             int friendYearBorn;
@@ -215,23 +212,27 @@ namespace WindowsFormsApplication1
             {
                 foreach (var friend in myFriends)
                 {
-                    friendYearBorn = this.getYear(friend.Birthday);
-                    if (friendYearBorn != 0)
+                    if (friend.Birthday != null)
                     {
-                        if (o_FriendsBornPerYear.ContainsKey(friendYearBorn) == true)
+                        friendYearBorn = this.getYear(friend.Birthday);
+                        if (friendYearBorn != 0)
                         {
-                            o_FriendsBornPerYear[friendYearBorn].Add(friend);
-                        }
-                        else
-                        {
-                            List<User> initialList = new List<User>();
-                            initialList.Add(friend);
-                            o_FriendsBornPerYear.Add(friendYearBorn, initialList);
+                            if (o_FriendsBornPerYear.ContainsKey(friendYearBorn) == true)
+                            {
+                                o_FriendsBornPerYear[friendYearBorn].Add(friend);
+                            }
+                            else
+                            {
+                                List<User> initialList = new List<User>();
+                                initialList.Add(friend);
+                                o_FriendsBornPerYear.Add(friendYearBorn, initialList);
+                            }
                         }
                     }
 
                     this.m_FriendsBornPerYear = o_FriendsBornPerYear;
                 }
+
                 if (o_FriendsBornPerYear.Count != 0)
                 {
                     this.Friend_list_SelectedIndexChanged();
@@ -242,7 +243,7 @@ namespace WindowsFormsApplication1
                 }
             }
         }
-		
+
         private int getYear(string i_Birthday)
         {
             int o_year = 0;
@@ -260,21 +261,22 @@ namespace WindowsFormsApplication1
         {
             foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornPerYear)
             {
-                this.Friends_year_list.Items.Add(entry.Key.ToString());
+                string yearAndFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
+                this.Friends_year_list.Items.Add(yearAndFriends);
             }
         }
 
         private void displaySelectedFriendsInYear(int i_year)
         {
             if (Friends_year_list.SelectedItems.Count == 1)
-             {
-                 this.NamesPerChosenYear.DisplayMember = "Name";
-                 List<User> selectedYearFriends = this.m_FriendsBornPerYear[i_year] as List<User>;
-                 foreach (var friend in selectedYearFriends)
-                 {
-                     this.NamesPerChosenYear.Items.Add(friend);
-                 }
-             }
+            {
+                this.NamesPerChosenYear.DisplayMember = "Name";
+                List<User> selectedYearFriends = this.m_FriendsBornPerYear[i_year] as List<User>;
+                foreach (var friend in selectedYearFriends)
+                {
+                    this.NamesPerChosenYear.Items.Add(friend);
+                }
+            }
         }
 
         private void GetCongtatulatingFriends()
@@ -290,8 +292,58 @@ namespace WindowsFormsApplication1
         {
             if (Friends_year_list.SelectedItems.Count == 1)
             {
-                int selectedYear = int.Parse(Friends_year_list.SelectedItem.ToString());
+                NamesPerChosenYear.Visible = true;
+                char delimiterChars = ' ';
+                string[] words = Friends_year_list.SelectedItem.ToString().Split(delimiterChars);
+                int selectedYear = int.Parse(words[0]);
                 this.displaySelectedFriendsInYear(selectedYear);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            {
+                Dictionary<int, List<User>> o_FriendsBornPerYear = new Dictionary<int, List<User>>();
+                int friendYearBorn;
+                FacebookObjectCollection<User> myFriends = this.m_LoggedInUser.Friends;
+                if (myFriends.Count == 0)
+                {
+                    MessageBox.Show("No Friends Birthday's to retrieve :(");
+                }
+                else
+                {
+                    foreach (var friend in myFriends)
+                    {
+                        if (friend.Birthday != null)
+                        {
+                            friendYearBorn = this.getYear(friend.Birthday);
+                            if (friendYearBorn != 0)
+                            {
+                                if (o_FriendsBornPerYear.ContainsKey(friendYearBorn) == true)
+                                {
+                                    o_FriendsBornPerYear[friendYearBorn].Add(friend);
+                                }
+                                else
+                                {
+                                    List<User> initialList = new List<User>();
+                                    initialList.Add(friend);
+                                    o_FriendsBornPerYear.Add(friendYearBorn, initialList);
+                                }
+                            }
+                        }
+
+                        this.m_FriendsBornPerYear = o_FriendsBornPerYear;
+                    }
+
+                    if (o_FriendsBornPerYear.Count != 0)
+                    {
+                        this.Friend_list_SelectedIndexChanged();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No Friends Birthday's to retrieve :(");
+                    }
+                }
             }
         }
     }

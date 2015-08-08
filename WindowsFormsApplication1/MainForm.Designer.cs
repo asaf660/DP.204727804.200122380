@@ -33,11 +33,9 @@
             this.checkBoxAutomaticLogin = new System.Windows.Forms.CheckBox();
             this.UserPictureBox = new System.Windows.Forms.PictureBox();
             this.Friends_year_list = new System.Windows.Forms.ListBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.buttonActivityData = new System.Windows.Forms.Button();
             this.panelUserDataPanel = new System.Windows.Forms.Panel();
-            this.progressBarPostsActivity = new System.Windows.Forms.ProgressBar();
             this.panelPostActivityData = new System.Windows.Forms.Panel();
             this.labelLastVideoValue = new System.Windows.Forms.Label();
             this.labelLastVideo = new System.Windows.Forms.Label();
@@ -45,8 +43,10 @@
             this.labelLastPhoto = new System.Windows.Forms.Label();
             this.labelLastStatusValue = new System.Windows.Forms.Label();
             this.labelLastStatus = new System.Windows.Forms.Label();
-            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.NamesPerChosenYear = new System.Windows.Forms.ListBox();
+            this.progressBarPostsActivity = new System.Windows.Forms.ProgressBar();
+            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).BeginInit();
             this.panelUserDataPanel.SuspendLayout();
             this.panelPostActivityData.SuspendLayout();
@@ -75,22 +75,11 @@
             // Friends_year_list
             // 
             this.Friends_year_list.FormattingEnabled = true;
-            this.Friends_year_list.Location = new System.Drawing.Point(319, 38);
+            this.Friends_year_list.Location = new System.Drawing.Point(299, 38);
             this.Friends_year_list.Name = "Friends_year_list";
-            this.Friends_year_list.Size = new System.Drawing.Size(173, 147);
+            this.Friends_year_list.Size = new System.Drawing.Size(173, 95);
             this.Friends_year_list.TabIndex = 2;
             this.Friends_year_list.SelectedIndexChanged += new System.EventHandler(this.Friends_year_list_SelectedIndexChanged);
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(316, 11);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(124, 13);
-            this.linkLabel1.TabIndex = 4;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Get friends Born per year";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // buttonLogin
             // 
@@ -114,28 +103,17 @@
             // 
             // panelUserDataPanel
             // 
+            this.panelUserDataPanel.Controls.Add(this.button1);
             this.panelUserDataPanel.Controls.Add(this.panelPostActivityData);
             this.panelUserDataPanel.Controls.Add(this.UserPictureBox);
             this.panelUserDataPanel.Controls.Add(this.NamesPerChosenYear);
             this.panelUserDataPanel.Controls.Add(this.buttonActivityData);
-            this.panelUserDataPanel.Controls.Add(this.linkLabel1);
             this.panelUserDataPanel.Controls.Add(this.Friends_year_list);
-            this.panelUserDataPanel.Location = new System.Drawing.Point(12, 91);
+            this.panelUserDataPanel.Location = new System.Drawing.Point(12, 75);
             this.panelUserDataPanel.Name = "panelUserDataPanel";
-            this.panelUserDataPanel.Size = new System.Drawing.Size(492, 212);
+            this.panelUserDataPanel.Size = new System.Drawing.Size(492, 228);
             this.panelUserDataPanel.TabIndex = 7;
             this.panelUserDataPanel.Visible = false;
-            // 
-            // progressBarPostsActivity
-            // 
-            this.progressBarPostsActivity.Location = new System.Drawing.Point(131, 40);
-            this.progressBarPostsActivity.MarqueeAnimationSpeed = 50;
-            this.progressBarPostsActivity.Name = "progressBarPostsActivity";
-            this.progressBarPostsActivity.Size = new System.Drawing.Size(123, 29);
-            this.progressBarPostsActivity.Step = 5;
-            this.progressBarPostsActivity.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.progressBarPostsActivity.TabIndex = 8;
-            this.progressBarPostsActivity.Visible = false;
             // 
             // panelPostActivityData
             // 
@@ -208,11 +186,33 @@
             // NamesPerChosenYear
             // 
             this.NamesPerChosenYear.FormattingEnabled = true;
-            this.NamesPerChosenYear.Location = new System.Drawing.Point(220, 38);
+            this.NamesPerChosenYear.Location = new System.Drawing.Point(200, 38);
             this.NamesPerChosenYear.Name = "NamesPerChosenYear";
             this.NamesPerChosenYear.Size = new System.Drawing.Size(93, 56);
             this.NamesPerChosenYear.TabIndex = 6;
+            this.NamesPerChosenYear.Visible = false;
             this.NamesPerChosenYear.SelectedIndexChanged += new System.EventHandler(this.NamesPerChosenYear_SelectedIndexChanged);
+            // 
+            // progressBarPostsActivity
+            // 
+            this.progressBarPostsActivity.Location = new System.Drawing.Point(131, 40);
+            this.progressBarPostsActivity.MarqueeAnimationSpeed = 50;
+            this.progressBarPostsActivity.Name = "progressBarPostsActivity";
+            this.progressBarPostsActivity.Size = new System.Drawing.Size(123, 29);
+            this.progressBarPostsActivity.Step = 5;
+            this.progressBarPostsActivity.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBarPostsActivity.TabIndex = 8;
+            this.progressBarPostsActivity.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(299, 11);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(170, 21);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Get friends born per year";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -231,7 +231,6 @@
             this.SizeChanged += new System.EventHandler(this.mainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).EndInit();
             this.panelUserDataPanel.ResumeLayout(false);
-            this.panelUserDataPanel.PerformLayout();
             this.panelPostActivityData.ResumeLayout(false);
             this.panelPostActivityData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
@@ -245,7 +244,6 @@
         private System.Windows.Forms.CheckBox checkBoxAutomaticLogin;
         private System.Windows.Forms.PictureBox UserPictureBox;
         private System.Windows.Forms.ListBox Friends_year_list;
-        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.ListBox NamesPerChosenYear;
 		private System.Windows.Forms.Button buttonActivityData;
@@ -259,5 +257,6 @@
         private System.Windows.Forms.Label labelLastStatusValue;
         private System.Windows.Forms.Label labelLastStatus;
         private System.Windows.Forms.ProgressBar progressBarPostsActivity;
+        private System.Windows.Forms.Button button1;
     }
 }
