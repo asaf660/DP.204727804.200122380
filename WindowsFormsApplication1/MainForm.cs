@@ -5,55 +5,204 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
+using System.IO;
 using System.Windows.Forms;
 using FacebookWrapper.ObjectModel;
 using FacebookWrapper;
 
 namespace WindowsFormsApplication1
 {
-    public partial class Design_Patterns_App : Form
+    public partial class MainForm : Form
     {
-        public Design_Patterns_App()
-        {
-            this.InitializeComponent();
-            FacebookWrapper.FacebookService.s_CollectionLimit = 1000;
-        }
-
-        public User m_LoggedInUser;
+        private User m_LoggedInUser;
+        private LoginButtonActionDelegate m_linkAction;
         public Dictionary<int, List<User>> m_FriendsBornPerYear = new Dictionary<int, List<User>>();
 
-        private void loginAndInit()
+        public delegate void LoginButtonActionDelegate();
+        
+        public MainForm()
         {
-            /// Owner: design.patterns
+            InitializeComponent();
+            this.StartPosition = FormStartPosition.Manual;
+            this.WindowState = FormWindowState.Normal;
+            hideUserData();
+            FacebookWrapper.FacebookService.s_CollectionLimit = 10000;
+            m_linkAction = new LoginButtonActionDelegate(tryLogin);
+            this.Size = AppConfig.Instance.LastWindowSize;
+            this.Location = AppConfig.Instance.LastWindowLocation;
+            checkBoxAutomaticLogin.Checked = AppConfig.Instance.AutoConnect;
+            if (checkBoxAutomaticLogin.Checked)
+            {
+                string accessToken = AppConfig.Instance.LastAccessToken;
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    try
+                    {
+                        loginWithLoginResult(FacebookService.Connect(accessToken));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+        }
 
-            /// Use the FacebookService.Login method to display the login form to any user who wish to use this application.
-            /// You can then save the result.AccessToken for future auto-connect to this user:       
-            LoginResult result = FacebookService.Login("511256585691702", "user_status", "user_birthday", "user_about_me", "user_friends", "publish_actions", "user_events", "user_posts", "user_photos" );  /// (desig patter's "Design Patterns Course App 2.4" app)
-            ///  These are NOT the complete list of permissions. Other permissions for example:
-            /// "user_birthday", "user_education_history", "user_hometown", "user_likes","user_location","user_relationships","user_relationship_details","user_religion_politics", "user_videos", "user_website", "user_work_history", "email","read_insights","rsvp_event","manage_pages"
-            /// The documentation regarding facebook login and permissions can be found here: 
-            /// v2.4: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
-            if (!string.IsNullOrEmpty(result.AccessToken))
+        private void tryLogin()
+        {
+            LoginResult result = FacebookService.Login("511256585691702", 
+	    					       "user_status", 
+						       "user_birthday", 
+						       "user_about_me", 
+						       "user_friends", 
+						       "publish_actions", 
+						       "user_events", 
+						       "user_posts", 
+						       "user_photos" );  
+            loginWithLoginResult(result);
+        }
+
+        private void loginWithLoginResult(LoginResult i_LoginResult)
+        {
+            if (i_LoginResult != null)
             {
-                this.m_LoggedInUser = result.LoggedInUser;
-                this.fetchUserInfo();
+                if (!string.IsNullOrEmpty(i_LoginResult.AccessToken))
+                {
+                    AppConfig.Instance.LastAccessToken = i_LoginResult.AccessToken;
+                    checkBoxAutomaticLogin.Visible = false;
+                    m_LoggedInUser = i_LoginResult.LoggedInUser;
+                    fetchUserInfo();
+                    switchToLogoutButton();
+                }
+                else
+                {
+                    MessageBox.Show(i_LoginResult.ErrorMessage);
+                }
             }
-            else
-            {
-                MessageBox.Show(result.ErrorMessage);
-            }
+        }
+
+		private void logout()
+        {
+            clearUserData();
+            hideUserData();
+            FacebookService.Logout(null);
+            checkBoxAutomaticLogin.Visible = true;
+            switchToLoginButton();
+        }
+
+        private void clearUserData()
+        {
+            UserPictureBox.Image = null;
+        }
+
+        private void showUserData()
+        {
+            panelUserDataPanel.Show();
+        }
+
+        private void hideUserData()
+        {
+            panelUserDataPanel.Hide();
         }
 
         private void fetchUserInfo()
         {
-            this.UserPictureBox.LoadAsync(this.m_LoggedInUser.PictureNormalURL);
+            showUserData();
+            UserPictureBox.LoadAsync(m_LoggedInUser.PictureNormalURL);
+            /*if (m_LoggedInUser.Statuses.Count > 0)
+            {
+                textBoxStatus.Text = m_LoggedInUser.Statuses[0].Message; 
+            }*/
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void buttonLogin_Click(object sender, EventArgs e)
         {
+            m_linkAction();
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void switchToLoginButton()
+        {
+            m_linkAction = tryLogin;
+            buttonLogin.Text = "Login";
+        }
+
+        private void switchToLogoutButton()
+        {
+            m_linkAction = logout;
+            buttonLogin.Text = "Logout";
+        }
+
+        private void checkBoxAutomaticLogin_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfig.Instance.AutoConnect = checkBoxAutomaticLogin.Checked;
+        }
+
+        private void mainForm_LocationChanged(object sender, EventArgs e)
+        {
+            AppConfig.Instance.LastWindowLocation = this.Location;
+        }
+
+        private void mainForm_SizeChanged(object sender, EventArgs e)
+        {
+            AppConfig.Instance.LastWindowSize = this.Size;
+        }
+
+        private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AppConfig.SaveToFile();
+        }
+
+        private void buttonActivityData_Click(object sender, EventArgs e)
+        {
+            BackgroundWorker fetchActivitiesBackgroundWorker = new BackgroundWorker();
+            fetchActivitiesBackgroundWorker.DoWork += fetchPostActivityBackgroundWorkerDoWork;
+            fetchActivitiesBackgroundWorker.RunWorkerCompleted += fetchPostActivityBackgroundWorkerRunWorkerCompleted;
+            progressBarPostsActivity.Visible = true;
+            fetchActivitiesBackgroundWorker.RunWorkerAsync();
+        }
+
+        private void fetchPostActivityBackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressBarPostsActivity.Visible = false;
+            panelPostActivityData.Visible = true;
+        }
+
+        private void fetchPostActivityBackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        {
+            fetchPostActivity();
+        }
+
+        private void fetchPostActivity()
+        {
+            Func<Post, bool> statusPredicate = new Func<Post, bool>(statusPostPredicate);
+            Post lastPhotoUploadPost = m_LoggedInUser.Posts.First<Post>(photoPostPredicate);
+            Post lastVideoPost = m_LoggedInUser.Posts.First<Post>(videoPostPredicate);
+            Post lastStatusPost = m_LoggedInUser.Posts.First<Post>(statusPredicate);
+            BeginInvoke((MethodInvoker)delegate
+            {
+                labelLastStatusValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastStatusPost.CreatedTime);
+                labelLastPhotoValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastPhotoUploadPost.CreatedTime);
+                labelLastVideoValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastVideoPost.CreatedTime);
+            });
+        }
+
+        private bool statusPostPredicate(Post i_Post)
+        {
+            return !string.IsNullOrEmpty(i_Post.Message);
+        }
+
+        private bool photoPostPredicate(Post i_Post)
+        {
+            return i_Post.Type == Post.eType.photo;
+        }
+
+        private bool videoPostPredicate(Post i_Post)
+        {
+            return i_Post.Type == Post.eType.video;
+        }
+		
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Dictionary<int, List<User>> o_FriendsBornPerYear = new Dictionary<int, List<User>>();
             int friendYearBorn;
@@ -93,7 +242,7 @@ namespace WindowsFormsApplication1
                 }
             }
         }
-
+		
         private int getYear(string i_Birthday)
         {
             int o_year = 0;
