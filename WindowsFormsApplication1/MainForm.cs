@@ -110,6 +110,8 @@ namespace WindowsFormsApplication1
         private void fetchUserInfo()
         {
             this.showUserData();
+            this.labelUserFullName.Text = string.Format("{0} {1}", this.m_LoggedInUser.FirstName, this.m_LoggedInUser.LastName);
+            this.labelUserEmail.Text = string.Format("{0}", this.m_LoggedInUser.Email);
             this.UserPictureBox.LoadAsync(this.m_LoggedInUser.PictureNormalURL);
         }
 
@@ -270,11 +272,11 @@ namespace WindowsFormsApplication1
         {
             if (Friends_year_list.SelectedItems.Count == 1)
             {
-                this.NamesPerChosenYear.DisplayMember = "Name";
+                this.listBoxNamesPerChosenYear.DisplayMember = "Name";
                 List<User> selectedYearFriends = this.m_FriendsBornPerYear[i_year] as List<User>;
                 foreach (var friend in selectedYearFriends)
                 {
-                    this.NamesPerChosenYear.Items.Add(friend);
+                    this.listBoxNamesPerChosenYear.Items.Add(friend);
                 }
             }
         }
@@ -284,15 +286,11 @@ namespace WindowsFormsApplication1
             List<string> congratulatingFriends = new List<string>();
         }
 
-        private void NamesPerChosenYear_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
         private void Friends_year_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (Friends_year_list.SelectedItems.Count == 1)
             {
-                NamesPerChosenYear.Visible = true;
+                listBoxNamesPerChosenYear.Visible = true;
                 char delimiterChars = ' ';
                 string[] words = Friends_year_list.SelectedItem.ToString().Split(delimiterChars);
                 int selectedYear = int.Parse(words[0]);
@@ -300,7 +298,7 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonGetFriendsYears_Click(object sender, EventArgs e)
         {
             {
                 Dictionary<int, List<User>> o_FriendsBornPerYear = new Dictionary<int, List<User>>();
@@ -341,7 +339,7 @@ namespace WindowsFormsApplication1
                     }
                     else
                     {
-                        MessageBox.Show("No Friends Birthday's to retrieve :(");
+                        MessageBox.Show("No Friends Birthdays to retrieve :(");
                     }
                 }
             }

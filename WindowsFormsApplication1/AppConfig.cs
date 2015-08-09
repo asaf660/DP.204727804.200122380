@@ -47,7 +47,7 @@ namespace WindowsFormsApplication1
         {
             LastAccessToken = string.Empty;
             AutoConnect = true;
-            LastWindowSize = new Size(500, 500);
+            LastWindowSize = new Size(592, 269);
             LastWindowLocation = new Point(0, 0);
         }
 
