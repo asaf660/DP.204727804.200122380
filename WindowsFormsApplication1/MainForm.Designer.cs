@@ -77,7 +77,7 @@
             // Friends_year_list
             // 
             this.Friends_year_list.FormattingEnabled = true;
-            this.Friends_year_list.Location = new System.Drawing.Point(152, 30);
+            this.Friends_year_list.Location = new System.Drawing.Point(118, 44);
             this.Friends_year_list.Name = "Friends_year_list";
             this.Friends_year_list.Size = new System.Drawing.Size(70, 95);
             this.Friends_year_list.TabIndex = 2;
@@ -95,9 +95,9 @@
             // 
             // buttonActivityData
             // 
-            this.buttonActivityData.Location = new System.Drawing.Point(364, 3);
+            this.buttonActivityData.Location = new System.Drawing.Point(314, 3);
             this.buttonActivityData.Name = "buttonActivityData";
-            this.buttonActivityData.Size = new System.Drawing.Size(111, 21);
+            this.buttonActivityData.Size = new System.Drawing.Size(67, 35);
             this.buttonActivityData.TabIndex = 6;
             this.buttonActivityData.Text = "View Posts Activity";
             this.buttonActivityData.UseVisualStyleBackColor = true;
@@ -115,17 +115,17 @@
             this.panelUserDataPanel.Controls.Add(this.Friends_year_list);
             this.panelUserDataPanel.Location = new System.Drawing.Point(12, 75);
             this.panelUserDataPanel.Name = "panelUserDataPanel";
-            this.panelUserDataPanel.Size = new System.Drawing.Size(573, 157);
+            this.panelUserDataPanel.Size = new System.Drawing.Size(521, 157);
             this.panelUserDataPanel.TabIndex = 7;
             this.panelUserDataPanel.Visible = false;
             // 
             // buttonGetFriendsYears
             // 
-            this.buttonGetFriendsYears.Location = new System.Drawing.Point(152, 3);
+            this.buttonGetFriendsYears.Location = new System.Drawing.Point(118, 3);
             this.buttonGetFriendsYears.Name = "buttonGetFriendsYears";
-            this.buttonGetFriendsYears.Size = new System.Drawing.Size(142, 21);
+            this.buttonGetFriendsYears.Size = new System.Drawing.Size(70, 35);
             this.buttonGetFriendsYears.TabIndex = 9;
-            this.buttonGetFriendsYears.Text = "Get friends born per year";
+            this.buttonGetFriendsYears.Text = "Friends Birthdays";
             this.buttonGetFriendsYears.UseVisualStyleBackColor = true;
             this.buttonGetFriendsYears.Click += new System.EventHandler(this.buttonGetFriendsYears_Click);
             // 
@@ -137,7 +137,7 @@
             this.panelPostActivityData.Controls.Add(this.labelLastPhoto);
             this.panelPostActivityData.Controls.Add(this.labelLastStatusValue);
             this.panelPostActivityData.Controls.Add(this.labelLastStatus);
-            this.panelPostActivityData.Location = new System.Drawing.Point(364, 30);
+            this.panelPostActivityData.Location = new System.Drawing.Point(314, 44);
             this.panelPostActivityData.Name = "panelPostActivityData";
             this.panelPostActivityData.Size = new System.Drawing.Size(199, 60);
             this.panelPostActivityData.TabIndex = 7;
@@ -200,9 +200,9 @@
             // listBoxNamesPerChosenYear
             // 
             this.listBoxNamesPerChosenYear.FormattingEnabled = true;
-            this.listBoxNamesPerChosenYear.Location = new System.Drawing.Point(228, 30);
+            this.listBoxNamesPerChosenYear.Location = new System.Drawing.Point(194, 44);
             this.listBoxNamesPerChosenYear.Name = "listBoxNamesPerChosenYear";
-            this.listBoxNamesPerChosenYear.Size = new System.Drawing.Size(114, 121);
+            this.listBoxNamesPerChosenYear.Size = new System.Drawing.Size(114, 95);
             this.listBoxNamesPerChosenYear.TabIndex = 6;
             this.listBoxNamesPerChosenYear.Visible = false;
             // 
@@ -240,7 +240,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(592, 239);
+            this.ClientSize = new System.Drawing.Size(542, 239);
             this.Controls.Add(this.progressBarPostsActivity);
             this.Controls.Add(this.checkBoxAutomaticLogin);
             this.Controls.Add(this.buttonLogin);
