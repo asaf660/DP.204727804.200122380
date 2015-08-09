@@ -1,4 +1,5 @@
-﻿namespace WindowsFormsApplication1
+﻿// MainForm.Designer.cs
+namespace WindowsFormsApplication1
 {
     public partial class MainForm
     {
