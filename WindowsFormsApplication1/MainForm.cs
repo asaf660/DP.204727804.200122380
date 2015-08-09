@@ -18,7 +18,7 @@ namespace WindowsFormsApplication1
     {
         private User m_LoggedInUser;
         private LoginButtonActionDelegate m_linkAction;
-        public Dictionary<int, List<User>> m_FriendsBornPerYear = new Dictionary<int, List<User>>();
+        private Dictionary<int, List<User>> m_FriendsBornPerYear = new Dictionary<int, List<User>>();
 
         public delegate void LoginButtonActionDelegate();
 
@@ -200,51 +200,6 @@ namespace WindowsFormsApplication1
         private bool videoPostPredicate(Post i_Post)
         {
             return i_Post.Type == Post.eType.video;
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Dictionary<int, List<User>> o_FriendsBornPerYear = new Dictionary<int, List<User>>();
-            int friendYearBorn;
-            FacebookObjectCollection<User> myFriends = this.m_LoggedInUser.Friends;
-            if (myFriends.Count == 0)
-            {
-                MessageBox.Show("No Friends Birthday's to retrieve :(");
-            }
-            else
-            {
-                foreach (var friend in myFriends)
-                {
-                    if (friend.Birthday != null)
-                    {
-                        friendYearBorn = this.getYear(friend.Birthday);
-                        if (friendYearBorn != 0)
-                        {
-                            if (o_FriendsBornPerYear.ContainsKey(friendYearBorn) == true)
-                            {
-                                o_FriendsBornPerYear[friendYearBorn].Add(friend);
-                            }
-                            else
-                            {
-                                List<User> initialList = new List<User>();
-                                initialList.Add(friend);
-                                o_FriendsBornPerYear.Add(friendYearBorn, initialList);
-                            }
-                        }
-                    }
-
-                    this.m_FriendsBornPerYear = o_FriendsBornPerYear;
-                }
-
-                if (o_FriendsBornPerYear.Count != 0)
-                {
-                    this.Friend_list_SelectedIndexChanged();
-                }
-                else
-                {
-                    MessageBox.Show("No Friends Birthday's to retrieve :(");
-                }
-            }
         }
 
         private int getYear(string i_Birthday)
