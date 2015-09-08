@@ -35,8 +35,10 @@ namespace WindowsFormsApplication1
             this.UserPictureBox = new System.Windows.Forms.PictureBox();
             this.Friends_year_list = new System.Windows.Forms.ListBox();
             this.buttonLogin = new System.Windows.Forms.Button();
-            this.buttonActivityData = new System.Windows.Forms.Button();
             this.panelUserDataPanel = new System.Windows.Forms.Panel();
+            this.linkActivityData = new System.Windows.Forms.LinkLabel();
+            this.labelUserEmail = new System.Windows.Forms.Label();
+            this.labelUserFullName = new System.Windows.Forms.Label();
             this.buttonGetFriendsYears = new System.Windows.Forms.Button();
             this.panelPostActivityData = new System.Windows.Forms.Panel();
             this.labelLastVideoValue = new System.Windows.Forms.Label();
@@ -48,12 +50,15 @@ namespace WindowsFormsApplication1
             this.listBoxNamesPerChosenYear = new System.Windows.Forms.ListBox();
             this.progressBarPostsActivity = new System.Windows.Forms.ProgressBar();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.labelUserFullName = new System.Windows.Forms.Label();
-            this.labelUserEmail = new System.Windows.Forms.Label();
+            this.textBoxStatus = new System.Windows.Forms.TextBox();
+            this.buttonSetStatus = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panelPostStatus = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).BeginInit();
             this.panelUserDataPanel.SuspendLayout();
             this.panelPostActivityData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
+            this.panelPostStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBoxAutomaticLogin
@@ -71,16 +76,16 @@ namespace WindowsFormsApplication1
             // 
             this.UserPictureBox.Location = new System.Drawing.Point(3, 3);
             this.UserPictureBox.Name = "UserPictureBox";
-            this.UserPictureBox.Size = new System.Drawing.Size(109, 94);
+            this.UserPictureBox.Size = new System.Drawing.Size(106, 95);
             this.UserPictureBox.TabIndex = 1;
             this.UserPictureBox.TabStop = false;
             // 
             // Friends_year_list
             // 
             this.Friends_year_list.FormattingEnabled = true;
-            this.Friends_year_list.Location = new System.Drawing.Point(118, 44);
+            this.Friends_year_list.Location = new System.Drawing.Point(6, 249);
             this.Friends_year_list.Name = "Friends_year_list";
-            this.Friends_year_list.Size = new System.Drawing.Size(70, 95);
+            this.Friends_year_list.Size = new System.Drawing.Size(79, 186);
             this.Friends_year_list.TabIndex = 2;
             this.Friends_year_list.SelectedIndexChanged += new System.EventHandler(this.Friends_year_list_SelectedIndexChanged);
             // 
@@ -94,35 +99,54 @@ namespace WindowsFormsApplication1
             this.buttonLogin.UseVisualStyleBackColor = true;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
-            // buttonActivityData
-            // 
-            this.buttonActivityData.Location = new System.Drawing.Point(314, 3);
-            this.buttonActivityData.Name = "buttonActivityData";
-            this.buttonActivityData.Size = new System.Drawing.Size(67, 35);
-            this.buttonActivityData.TabIndex = 6;
-            this.buttonActivityData.Text = "View Posts Activity";
-            this.buttonActivityData.UseVisualStyleBackColor = true;
-            this.buttonActivityData.Click += new System.EventHandler(this.buttonActivityData_Click);
-            // 
             // panelUserDataPanel
             // 
+            this.panelUserDataPanel.Controls.Add(this.linkActivityData);
             this.panelUserDataPanel.Controls.Add(this.labelUserEmail);
             this.panelUserDataPanel.Controls.Add(this.labelUserFullName);
             this.panelUserDataPanel.Controls.Add(this.buttonGetFriendsYears);
             this.panelUserDataPanel.Controls.Add(this.panelPostActivityData);
             this.panelUserDataPanel.Controls.Add(this.UserPictureBox);
             this.panelUserDataPanel.Controls.Add(this.listBoxNamesPerChosenYear);
-            this.panelUserDataPanel.Controls.Add(this.buttonActivityData);
             this.panelUserDataPanel.Controls.Add(this.Friends_year_list);
             this.panelUserDataPanel.Location = new System.Drawing.Point(12, 75);
             this.panelUserDataPanel.Name = "panelUserDataPanel";
-            this.panelUserDataPanel.Size = new System.Drawing.Size(521, 157);
+            this.panelUserDataPanel.Size = new System.Drawing.Size(673, 441);
             this.panelUserDataPanel.TabIndex = 7;
             this.panelUserDataPanel.Visible = false;
             // 
+            // linkActivityData
+            // 
+            this.linkActivityData.AutoSize = true;
+            this.linkActivityData.Location = new System.Drawing.Point(149, 3);
+            this.linkActivityData.Name = "linkActivityData";
+            this.linkActivityData.Size = new System.Drawing.Size(96, 13);
+            this.linkActivityData.TabIndex = 13;
+            this.linkActivityData.TabStop = true;
+            this.linkActivityData.Text = "View Posts Activity";
+            this.linkActivityData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkActivityData_LinkClicked);
+            // 
+            // labelUserEmail
+            // 
+            this.labelUserEmail.AutoSize = true;
+            this.labelUserEmail.Location = new System.Drawing.Point(3, 114);
+            this.labelUserEmail.Name = "labelUserEmail";
+            this.labelUserEmail.Size = new System.Drawing.Size(37, 13);
+            this.labelUserEmail.TabIndex = 11;
+            this.labelUserEmail.Text = "(email)";
+            // 
+            // labelUserFullName
+            // 
+            this.labelUserFullName.AutoSize = true;
+            this.labelUserFullName.Location = new System.Drawing.Point(3, 101);
+            this.labelUserFullName.Name = "labelUserFullName";
+            this.labelUserFullName.Size = new System.Drawing.Size(55, 13);
+            this.labelUserFullName.TabIndex = 10;
+            this.labelUserFullName.Text = "(full name)";
+            // 
             // buttonGetFriendsYears
             // 
-            this.buttonGetFriendsYears.Location = new System.Drawing.Point(118, 3);
+            this.buttonGetFriendsYears.Location = new System.Drawing.Point(6, 208);
             this.buttonGetFriendsYears.Name = "buttonGetFriendsYears";
             this.buttonGetFriendsYears.Size = new System.Drawing.Size(70, 35);
             this.buttonGetFriendsYears.TabIndex = 9;
@@ -138,7 +162,7 @@ namespace WindowsFormsApplication1
             this.panelPostActivityData.Controls.Add(this.labelLastPhoto);
             this.panelPostActivityData.Controls.Add(this.labelLastStatusValue);
             this.panelPostActivityData.Controls.Add(this.labelLastStatus);
-            this.panelPostActivityData.Location = new System.Drawing.Point(314, 44);
+            this.panelPostActivityData.Location = new System.Drawing.Point(388, 3);
             this.panelPostActivityData.Name = "panelPostActivityData";
             this.panelPostActivityData.Size = new System.Drawing.Size(199, 60);
             this.panelPostActivityData.TabIndex = 7;
@@ -201,47 +225,69 @@ namespace WindowsFormsApplication1
             // listBoxNamesPerChosenYear
             // 
             this.listBoxNamesPerChosenYear.FormattingEnabled = true;
-            this.listBoxNamesPerChosenYear.Location = new System.Drawing.Point(194, 44);
+            this.listBoxNamesPerChosenYear.Location = new System.Drawing.Point(91, 249);
             this.listBoxNamesPerChosenYear.Name = "listBoxNamesPerChosenYear";
-            this.listBoxNamesPerChosenYear.Size = new System.Drawing.Size(114, 95);
+            this.listBoxNamesPerChosenYear.Size = new System.Drawing.Size(125, 186);
             this.listBoxNamesPerChosenYear.TabIndex = 6;
             this.listBoxNamesPerChosenYear.Visible = false;
             // 
             // progressBarPostsActivity
             // 
-            this.progressBarPostsActivity.Location = new System.Drawing.Point(229, 43);
+            this.progressBarPostsActivity.Location = new System.Drawing.Point(301, 8);
             this.progressBarPostsActivity.MarqueeAnimationSpeed = 50;
             this.progressBarPostsActivity.Name = "progressBarPostsActivity";
-            this.progressBarPostsActivity.Size = new System.Drawing.Size(154, 29);
+            this.progressBarPostsActivity.Size = new System.Drawing.Size(202, 29);
             this.progressBarPostsActivity.Step = 5;
             this.progressBarPostsActivity.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBarPostsActivity.TabIndex = 8;
             this.progressBarPostsActivity.Visible = false;
             // 
-            // labelUserFullName
+            // textBoxStatus
             // 
-            this.labelUserFullName.AutoSize = true;
-            this.labelUserFullName.Location = new System.Drawing.Point(3, 112);
-            this.labelUserFullName.Name = "labelUserFullName";
-            this.labelUserFullName.Size = new System.Drawing.Size(55, 13);
-            this.labelUserFullName.TabIndex = 10;
-            this.labelUserFullName.Text = "(full name)";
+            this.textBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxStatus.Location = new System.Drawing.Point(70, 2);
+            this.textBoxStatus.Name = "textBoxStatus";
+            this.textBoxStatus.Size = new System.Drawing.Size(408, 20);
+            this.textBoxStatus.TabIndex = 46;
             // 
-            // labelUserEmail
+            // buttonSetStatus
             // 
-            this.labelUserEmail.AutoSize = true;
-            this.labelUserEmail.Location = new System.Drawing.Point(3, 130);
-            this.labelUserEmail.Name = "labelUserEmail";
-            this.labelUserEmail.Size = new System.Drawing.Size(37, 13);
-            this.labelUserEmail.TabIndex = 11;
-            this.labelUserEmail.Text = "(email)";
+            this.buttonSetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSetStatus.Location = new System.Drawing.Point(481, 0);
+            this.buttonSetStatus.Name = "buttonSetStatus";
+            this.buttonSetStatus.Size = new System.Drawing.Size(65, 23);
+            this.buttonSetStatus.TabIndex = 47;
+            this.buttonSetStatus.Text = "Post";
+            this.buttonSetStatus.UseVisualStyleBackColor = true;
+            this.buttonSetStatus.Click += new System.EventHandler(this.buttonSetStatus_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 7);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 13);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "Post Status:";
+            // 
+            // panelPostStatus
+            // 
+            this.panelPostStatus.Controls.Add(this.label3);
+            this.panelPostStatus.Controls.Add(this.buttonSetStatus);
+            this.panelPostStatus.Controls.Add(this.textBoxStatus);
+            this.panelPostStatus.Location = new System.Drawing.Point(131, 46);
+            this.panelPostStatus.Name = "panelPostStatus";
+            this.panelPostStatus.Size = new System.Drawing.Size(546, 26);
+            this.panelPostStatus.TabIndex = 49;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(542, 239);
+            this.BackColor = System.Drawing.SystemColors.Menu;
+            this.ClientSize = new System.Drawing.Size(689, 528);
+            this.Controls.Add(this.panelPostStatus);
             this.Controls.Add(this.progressBarPostsActivity);
             this.Controls.Add(this.checkBoxAutomaticLogin);
             this.Controls.Add(this.buttonLogin);
@@ -257,6 +303,8 @@ namespace WindowsFormsApplication1
             this.panelPostActivityData.ResumeLayout(false);
             this.panelPostActivityData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
+            this.panelPostStatus.ResumeLayout(false);
+            this.panelPostStatus.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,7 +317,6 @@ namespace WindowsFormsApplication1
         private System.Windows.Forms.ListBox Friends_year_list;
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.ListBox listBoxNamesPerChosenYear;
-		private System.Windows.Forms.Button buttonActivityData;
         private System.Windows.Forms.Panel panelUserDataPanel;
         private System.Windows.Forms.BindingSource mainFormBindingSource;
         private System.Windows.Forms.Panel panelPostActivityData;
@@ -283,5 +330,10 @@ namespace WindowsFormsApplication1
         private System.Windows.Forms.Button buttonGetFriendsYears;
         private System.Windows.Forms.Label labelUserEmail;
         private System.Windows.Forms.Label labelUserFullName;
+        private System.Windows.Forms.TextBox textBoxStatus;
+        private System.Windows.Forms.Button buttonSetStatus;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel panelPostStatus;
+        private System.Windows.Forms.LinkLabel linkActivityData;
     }
 }

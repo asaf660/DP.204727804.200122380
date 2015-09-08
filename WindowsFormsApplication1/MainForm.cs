@@ -17,10 +17,8 @@ namespace WindowsFormsApplication1
     public partial class MainForm : Form
     {
         private User m_LoggedInUser;
-        private LoginButtonActionDelegate m_linkAction;
+        private Action m_linkAction;
         private Dictionary<int, List<User>> m_FriendsBornPerYear = new Dictionary<int, List<User>>();
-
-        public delegate void LoginButtonActionDelegate();
 
         public MainForm()
         {
@@ -29,7 +27,7 @@ namespace WindowsFormsApplication1
             this.WindowState = FormWindowState.Normal;
             this.hideUserData();
             FacebookWrapper.FacebookService.s_CollectionLimit = 10000;
-            this.m_linkAction = new LoginButtonActionDelegate(this.tryLogin);
+            this.m_linkAction = this.tryLogin;
             this.Size = AppConfig.Instance.LastWindowSize;
             this.Location = AppConfig.Instance.LastWindowLocation;
             checkBoxAutomaticLogin.Checked = AppConfig.Instance.AutoConnect;
@@ -53,7 +51,7 @@ namespace WindowsFormsApplication1
         private void tryLogin()
         {
             LoginResult result = FacebookService.Login(
-                                                        "511256585691702",
+                                                       "511256585691702",
                                                        "user_status",
                                                        "user_birthday",
                                                        "user_about_me",
@@ -84,6 +82,13 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void buttonSetStatus_Click(object sender, EventArgs e)
+        {
+            Status postedStatus = m_LoggedInUser.PostStatus(textBoxStatus.Text);
+            MessageBox.Show("Status Posted! ID: " + postedStatus.Id);
+
+        }
+
         private void logout()
         {
             this.clearUserData();
@@ -96,15 +101,21 @@ namespace WindowsFormsApplication1
         private void clearUserData()
         {
             UserPictureBox.Image = null;
+            labelLastStatusValue.Text = string.Empty;
+            labelLastPhotoValue.Text = string.Empty;
+            labelLastVideoValue.Text = string.Empty;
         }
 
         private void showUserData()
         {
+            panelPostStatus.Show();
             panelUserDataPanel.Show();
         }
 
         private void hideUserData()
         {
+            panelPostStatus.Hide();
+            panelPostActivityData.Hide();
             panelUserDataPanel.Hide();
         }
 
@@ -175,31 +186,15 @@ namespace WindowsFormsApplication1
 
         private void fetchPostActivity()
         {
-            Func<Post, bool> statusPredicate = new Func<Post, bool>(this.statusPostPredicate);
-            Post lastPhotoUploadPost = this.m_LoggedInUser.Posts.First<Post>(this.photoPostPredicate);
-            Post lastVideoPost = this.m_LoggedInUser.Posts.First<Post>(this.videoPostPredicate);
-            Post lastStatusPost = this.m_LoggedInUser.Posts.First<Post>(statusPredicate);
+            Post lastPhotoUploadPost = this.m_LoggedInUser.Posts.First<Post>((Post i_Post) => i_Post.Type == Post.eType.photo);
+            Post lastVideoPost = this.m_LoggedInUser.Posts.First<Post>((Post i_Post) => i_Post.Type == Post.eType.video);
+            Post lastStatusPost = this.m_LoggedInUser.Posts.First<Post>((Post i_Post) => !string.IsNullOrEmpty(i_Post.Message));
             this.BeginInvoke((MethodInvoker)delegate
             {
-                labelLastStatusValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastStatusPost.CreatedTime);
-                labelLastPhotoValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastPhotoUploadPost.CreatedTime);
-                labelLastVideoValue.Text = PeriodOfTime.GetPeriodToNowString((DateTime)lastVideoPost.CreatedTime);
+                labelLastStatusValue.Text = PeriodFactory.GetPeriodUntilNow((DateTime)lastStatusPost.CreatedTime).PrintPeriod();
+                labelLastPhotoValue.Text = PeriodFactory.GetPeriodUntilNow((DateTime)lastPhotoUploadPost.CreatedTime).PrintPeriod();
+                labelLastVideoValue.Text = PeriodFactory.GetPeriodUntilNow((DateTime)lastVideoPost.CreatedTime).PrintPeriod();
             });
-        }
-
-        private bool statusPostPredicate(Post i_Post)
-        {
-            return !string.IsNullOrEmpty(i_Post.Message);
-        }
-
-        private bool photoPostPredicate(Post i_Post)
-        {
-            return i_Post.Type == Post.eType.photo;
-        }
-
-        private bool videoPostPredicate(Post i_Post)
-        {
-            return i_Post.Type == Post.eType.video;
         }
 
         private int getYear(string i_Birthday)
@@ -299,6 +294,15 @@ namespace WindowsFormsApplication1
                     }
                 }
             }
+        }
+
+        private void linkActivityData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            BackgroundWorker fetchActivitiesBackgroundWorker = new BackgroundWorker();
+            fetchActivitiesBackgroundWorker.DoWork += this.fetchPostActivityBackgroundWorkerDoWork;
+            fetchActivitiesBackgroundWorker.RunWorkerCompleted += this.fetchPostActivityBackgroundWorkerRunWorkerCompleted;
+            progressBarPostsActivity.Visible = true;
+            fetchActivitiesBackgroundWorker.RunWorkerAsync();
         }
     }
 }

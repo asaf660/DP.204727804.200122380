@@ -6,16 +6,101 @@ using System.Text;
 
 namespace WindowsFormsApplication1
 {
-    public static class PeriodOfTime
+    public static class PeriodFactory
     {
-        public static string GetPeriodToNowString(DateTime i_SinceDate)
+        public static Period GetPeriodUntilNow(DateTime i_SinceDate)
         {
-            return GetPeriodString(i_SinceDate, DateTime.Now);
+            return GetPeriod(i_SinceDate, DateTime.Now);
         }
 
-        public static string GetPeriodString(DateTime i_SinceDate, DateTime i_ToDate)
+        public static Period GetPeriod(DateTime i_SinceDate, DateTime i_ToDate)
         {
-            TimeSpan timeSpan = DateTime.Now.Subtract(i_SinceDate);
+            TimeSpan timeSpan = i_ToDate.Subtract(i_SinceDate);
+            if (timeSpan.Days > 6)
+            {
+                return new DistantPeriod(i_SinceDate, i_ToDate);
+            }
+            else
+            {
+                return new RecentPeriod(i_SinceDate, i_ToDate);
+            }
+        }
+    }
+
+    public abstract class Period
+    {
+        public abstract string PrintPeriod();
+
+        protected DateTime SinceDate { get; set; }
+        protected DateTime ToDate { get; set; }
+    }
+
+    public class RecentPeriod : Period {
+        public RecentPeriod(DateTime i_SinceDate, DateTime i_ToDate)
+        {
+            SinceDate = i_SinceDate;
+            ToDate = i_ToDate;
+        }
+
+        public override string PrintPeriod()
+        {
+            TimeSpan timeSpan = ToDate.Subtract(SinceDate);
+            string periodString = string.Empty;
+
+            if (timeSpan.Days > 6)
+            {
+                periodString = string.Format("{0} days ago, on {1:dd/MM/yy}", timeSpan.Days, SinceDate);
+            }
+            else
+            {
+                if (timeSpan.Days >= 1)
+                {
+                    switch (timeSpan.Days)
+                    {
+                        case 1:
+                            periodString = string.Format("yesterday on {0:H:mm}", SinceDate);
+                            break;
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                            periodString = string.Format("on {0:dddd H:mm}", SinceDate);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (timeSpan.Minutes)
+                    {
+                        case 0:
+                            periodString = "less than a minute ago";
+                            break;
+                        case 1:
+                            periodString = "1 minute ago";
+                            break;
+                        default:
+                            periodString = string.Format("{0} minutes ago", timeSpan.Minutes);
+                            break;
+                    }
+                }
+            }
+
+            return periodString;
+        }
+    }
+
+    public class DistantPeriod : Period
+    {
+        public DistantPeriod(DateTime i_SinceDate, DateTime i_ToDate)
+        {
+            SinceDate = i_SinceDate;
+            ToDate = i_ToDate;
+        }
+
+        public override string PrintPeriod()
+        {
+            TimeSpan timeSpan = ToDate.Subtract(SinceDate);
             string periodString = string.Empty;
 
             if (timeSpan.TotalDays >= 365)
@@ -34,47 +119,19 @@ namespace WindowsFormsApplication1
             else if (timeSpan.TotalDays >= 31)
             {
                 int monthsPast = (int)(timeSpan.TotalDays / 31);
-                    switch (monthsPast)
-                    {
-                        case 1:
-                            periodString = "over a year ago";
-                            break;
-                        default:
-                            periodString = string.Format("over {0} months ago", monthsPast);
-                            break;
-                    }
-            }
-            else if (timeSpan.Days >= 1)
-            {
-                switch (timeSpan.Days)
+                switch (monthsPast)
                 {
                     case 1:
-                        periodString = string.Format("yesterday on {0}:{1}", i_SinceDate.Hour, i_SinceDate.Minute);
-                        break;
-                    case 2:
-                    case 3:
-                    case 4:
-                        periodString = string.Format("on {0}", i_SinceDate.DayOfWeek.ToString());
+                        periodString = "over a month ago";
                         break;
                     default:
-                        periodString = string.Format("{0} days ago", timeSpan.Days);
+                        periodString = string.Format("over {0} months ago", monthsPast);
                         break;
                 }
             }
             else
             {
-                switch (timeSpan.Minutes)
-                {
-                    case 0:
-                        periodString = "less than a minute ago";
-                        break;
-                    case 1:
-                        periodString = "1 minute ago";
-                        break;
-                    default:
-                        periodString = string.Format("{0} minutes ago", timeSpan.Minutes);
-                        break;
-                }
+                periodString = string.Format("{0} days ago", timeSpan.Days);
             }
 
             return periodString;

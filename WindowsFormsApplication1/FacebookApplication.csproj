@@ -33,13 +33,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\..\..\..\..\Desktop\האקדמית תל אביב יפו\Design patterns\01_FB01_BasicFacebookFeatures.V6.8.0.10\FBApi\Facebook.dll</HintPath>
+      <HintPath>..\FBApi\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="FbGraphApiWrapper">
-      <HintPath>..\..\..\..\..\Desktop\האקדמית תל אביב יפו\Design patterns\01_FB01_BasicFacebookFeatures.V6.8.0.10\FBApi\FbGraphApiWrapper.dll</HintPath>
+      <HintPath>..\FBApi\FbGraphApiWrapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
