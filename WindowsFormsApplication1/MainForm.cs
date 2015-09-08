@@ -18,8 +18,17 @@ namespace WindowsFormsApplication1
     {
         private User m_LoggedInUser;
         private Action m_LinkAction;
-        private Dictionary<int, List<User>> m_FriendsBornPerYear = new Dictionary<int, List<User>>();
+        private Dictionary<int, List<User>> m_FriendsBornByMonthOrYearAndByGender = new Dictionary<int, List<User>>();
 
+		/// <summary>
+        /// create director and builder
+        /// </summary>
+        DirectorBirthdayList m_DirectorBirthdayList;
+        //TODO
+        private BuilderBirthdayList m_BuildermonthAndFemale;
+        private BuilderBirthdayList m_BuilderYearAndAllGender;
+        private Dictionary<string, BuilderBirthdayList> m_ConcreteBuilderOptions;
+		
         public MainForm()
         {
             this.InitializeComponent();
@@ -31,6 +40,8 @@ namespace WindowsFormsApplication1
             this.Size = AppConfig.Instance.LastWindowSize;
             this.Location = AppConfig.Instance.LastWindowLocation;
             checkBoxAutomaticLogin.Checked = AppConfig.Instance.AutoConnect;
+            m_ConcreteBuilderOptions = new Dictionary<string, BuilderBirthdayList>();
+
             if (checkBoxAutomaticLogin.Checked)
             {
                 string accessToken = AppConfig.Instance.LastAccessToken;
@@ -47,6 +58,9 @@ namespace WindowsFormsApplication1
                 }
             }
         }
+
+		
+       
 
         private void tryLogin()
         {
@@ -74,6 +88,9 @@ namespace WindowsFormsApplication1
                     this.m_LoggedInUser = i_LoginResult.LoggedInUser;
                     this.fetchUserInfo();
                     this.switchToLogoutButton();
+                    this.InitializeBirthdayBuilder();
+                    this.Friend_list_SelectedIndexChanged();
+                    this.listBox1_SelectedIndexChanged(); //todo
                 }
                 else
                 {
@@ -87,6 +104,15 @@ namespace WindowsFormsApplication1
             Status postedStatus = m_LoggedInUser.PostStatus(textBoxStatus.Text);
             MessageBox.Show("Status Posted! ID: " + postedStatus.Id);
 
+        }
+
+        public void InitializeBirthdayBuilder()
+        {
+            m_DirectorBirthdayList = new DirectorBirthdayList();
+            m_BuildermonthAndFemale = new ConcreteBuilderBirthdayListByMonthFemaleOnly(m_LoggedInUser);
+            m_BuilderYearAndAllGender = new ConcreteBuilderBirthdayListByYearAllGender(m_LoggedInUser);
+            m_ConcreteBuilderOptions.Add("friend birthdays by year all gender", m_BuilderYearAndAllGender);
+            m_ConcreteBuilderOptions.Add("friend birthdays by month Female only", m_BuildermonthAndFemale);
         }
 
         private void logout()
@@ -212,7 +238,8 @@ namespace WindowsFormsApplication1
 
         private void Friend_list_SelectedIndexChanged()
         {
-            foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornPerYear)
+            this.Friends_year_list.Items.Clear();
+            foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
             {
                 string yearAndFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
                 this.Friends_year_list.Items.Add(yearAndFriends);
@@ -224,7 +251,7 @@ namespace WindowsFormsApplication1
             if (Friends_year_list.SelectedItems.Count == 1)
             {
                 listBoxNamesPerChosenYear.DisplayMember = "Name";
-                List<User> selectedYearFriends = this.m_FriendsBornPerYear[i_year] as List<User>;
+                List<User> selectedYearFriends = this.m_FriendsBornByMonthOrYearAndByGender[i_year] as List<User>;
                 //foreach (var friend in selectedYearFriends)
                 //{
                 //    this.listBoxNamesPerChosenYear.Items.Add(friend);
@@ -291,12 +318,14 @@ namespace WindowsFormsApplication1
                             }
                         }
 
-                        this.m_FriendsBornPerYear = o_FriendsBornPerYear;
+                        this.m_FriendsBornByMonthOrYearAndByGender = o_FriendsBornPerYear;
                     }
 
                     if (o_FriendsBornPerYear.Count != 0)
                     {
                         this.Friend_list_SelectedIndexChanged();
+						this.listBox1_SelectedIndexChanged();
+                        //this.ListFriendsPresentShowOptions_SelectedIndexChanged();
                     }
                     else
                     {
@@ -305,6 +334,35 @@ namespace WindowsFormsApplication1
                 }
             }
         }
+		
+		private void listBox1_SelectedIndexChanged()
+        {
+            BuilderBirthdayList m_BuildermonthAndFemale = new ConcreteBuilderBirthdayListByMonthFemaleOnly(m_LoggedInUser);
+            BuilderBirthdayList m_BuilderYearAndAllGender = new ConcreteBuilderBirthdayListByYearAllGender(m_LoggedInUser);
+           // Dictionary<string, BuilderBirthdayList> m_ConcreteBuilderOptions = new Dictionary<string, BuilderBirthdayList>();
+            //m_ConcreteBuilderOptions.Add("friend birthdays by year all gender", m_BuilderYearAndAllGender);
+            //m_ConcreteBuilderOptions.Add("friend birthdays by month Female only", m_BuildermonthAndFemale);
+            ListFriendsPresentShowOptions.Items.Add("friend birthdays by year all gender");
+            ListFriendsPresentShowOptions.Items.Add("friend birthdays by month Female only");
+            ListFriendsPresentShowOptions.Visible = true;
+        }
+        private void ListFriendsPresentShowOptions_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (ListFriendsPresentShowOptions.SelectedItems.Count == 1)
+			{
+				string selectedModule = ListFriendsPresentShowOptions.SelectedItem.ToString();
+
+				m_DirectorBirthdayList.Construct(m_ConcreteBuilderOptions[selectedModule]);
+				BithdayListByGender birthdayList = m_ConcreteBuilderOptions[selectedModule].GetResult();
+                m_FriendsBornByMonthOrYearAndByGender = birthdayList.BirthdayList;
+                this.Friends_year_list.Items.Clear();
+                foreach (KeyValuePair<int, List<User>> entry in birthdayList.BirthdayList)
+                {
+                    string yearAndFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
+                    this.Friends_year_list.Items.Add(yearAndFriends);
+                }
+			}
+		}
 
         private void linkActivityData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
