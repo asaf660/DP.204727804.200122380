@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1
     public partial class MainForm : Form
     {
         private User m_LoggedInUser;
-        private Action m_linkAction;
+        private Action m_LinkAction;
         private Dictionary<int, List<User>> m_FriendsBornPerYear = new Dictionary<int, List<User>>();
 
         public MainForm()
@@ -27,7 +27,7 @@ namespace WindowsFormsApplication1
             this.WindowState = FormWindowState.Normal;
             this.hideUserData();
             FacebookWrapper.FacebookService.s_CollectionLimit = 10000;
-            this.m_linkAction = this.tryLogin;
+            this.m_LinkAction = this.tryLogin;
             this.Size = AppConfig.Instance.LastWindowSize;
             this.Location = AppConfig.Instance.LastWindowLocation;
             checkBoxAutomaticLogin.Checked = AppConfig.Instance.AutoConnect;
@@ -129,18 +129,18 @@ namespace WindowsFormsApplication1
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            this.m_linkAction();
+            this.m_LinkAction();
         }
 
         private void switchToLoginButton()
         {
-            this.m_linkAction = this.tryLogin;
+            this.m_LinkAction = this.tryLogin;
             buttonLogin.Text = "Login";
         }
 
         private void switchToLogoutButton()
         {
-            this.m_linkAction = this.logout;
+            this.m_LinkAction = this.logout;
             buttonLogin.Text = "Logout";
         }
 
@@ -223,11 +223,21 @@ namespace WindowsFormsApplication1
         {
             if (Friends_year_list.SelectedItems.Count == 1)
             {
-                this.listBoxNamesPerChosenYear.DisplayMember = "Name";
+                listBoxNamesPerChosenYear.DisplayMember = "Name";
                 List<User> selectedYearFriends = this.m_FriendsBornPerYear[i_year] as List<User>;
-                foreach (var friend in selectedYearFriends)
-                {
-                    this.listBoxNamesPerChosenYear.Items.Add(friend);
+                //foreach (var friend in selectedYearFriends)
+                //{
+                //    this.listBoxNamesPerChosenYear.Items.Add(friend);
+                //}
+                if (!listBoxNamesPerChosenYear.InvokeRequired)     
+                {         
+                    // binding the data source of the binding source, to our data source:         
+                    userBindingSource.DataSource = selectedYearFriends;     
+                }     
+                else     
+                {         
+                    // In case of cross-thread operation, invoking the binding code on the listBox's thread:         
+                    listBoxNamesPerChosenYear.Invoke(new Action(() => userBindingSource.DataSource = selectedYearFriends));     
                 }
             }
         }

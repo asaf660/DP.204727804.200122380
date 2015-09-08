@@ -31,6 +31,10 @@ namespace WindowsFormsApplication1
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Label nameLabel;
+            System.Windows.Forms.Label lastNameLabel;
+            System.Windows.Forms.Label firstNameLabel;
+            System.Windows.Forms.Label birthdayLabel;
             this.checkBoxAutomaticLogin = new System.Windows.Forms.CheckBox();
             this.UserPictureBox = new System.Windows.Forms.PictureBox();
             this.Friends_year_list = new System.Windows.Forms.ListBox();
@@ -48,17 +52,31 @@ namespace WindowsFormsApplication1
             this.labelLastStatusValue = new System.Windows.Forms.Label();
             this.labelLastStatus = new System.Windows.Forms.Label();
             this.listBoxNamesPerChosenYear = new System.Windows.Forms.ListBox();
+            this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.progressBarPostsActivity = new System.Windows.Forms.ProgressBar();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.buttonSetStatus = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.panelPostStatus = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.nameLabel1 = new System.Windows.Forms.Label();
+            this.lastNameLabel1 = new System.Windows.Forms.Label();
+            this.imageNormalPictureBox = new System.Windows.Forms.PictureBox();
+            this.birthdayLabel1 = new System.Windows.Forms.Label();
+            this.firstNameLabel1 = new System.Windows.Forms.Label();
+            nameLabel = new System.Windows.Forms.Label();
+            lastNameLabel = new System.Windows.Forms.Label();
+            firstNameLabel = new System.Windows.Forms.Label();
+            birthdayLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).BeginInit();
             this.panelUserDataPanel.SuspendLayout();
             this.panelPostActivityData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
             this.panelPostStatus.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageNormalPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // checkBoxAutomaticLogin
@@ -101,6 +119,7 @@ namespace WindowsFormsApplication1
             // 
             // panelUserDataPanel
             // 
+            this.panelUserDataPanel.Controls.Add(this.panel1);
             this.panelUserDataPanel.Controls.Add(this.linkActivityData);
             this.panelUserDataPanel.Controls.Add(this.labelUserEmail);
             this.panelUserDataPanel.Controls.Add(this.labelUserFullName);
@@ -162,7 +181,7 @@ namespace WindowsFormsApplication1
             this.panelPostActivityData.Controls.Add(this.labelLastPhoto);
             this.panelPostActivityData.Controls.Add(this.labelLastStatusValue);
             this.panelPostActivityData.Controls.Add(this.labelLastStatus);
-            this.panelPostActivityData.Location = new System.Drawing.Point(388, 3);
+            this.panelPostActivityData.Location = new System.Drawing.Point(251, 3);
             this.panelPostActivityData.Name = "panelPostActivityData";
             this.panelPostActivityData.Size = new System.Drawing.Size(199, 60);
             this.panelPostActivityData.TabIndex = 7;
@@ -224,12 +243,18 @@ namespace WindowsFormsApplication1
             // 
             // listBoxNamesPerChosenYear
             // 
+            this.listBoxNamesPerChosenYear.DataSource = this.userBindingSource;
+            this.listBoxNamesPerChosenYear.DisplayMember = "Name";
             this.listBoxNamesPerChosenYear.FormattingEnabled = true;
             this.listBoxNamesPerChosenYear.Location = new System.Drawing.Point(91, 249);
             this.listBoxNamesPerChosenYear.Name = "listBoxNamesPerChosenYear";
             this.listBoxNamesPerChosenYear.Size = new System.Drawing.Size(125, 186);
             this.listBoxNamesPerChosenYear.TabIndex = 6;
             this.listBoxNamesPerChosenYear.Visible = false;
+            // 
+            // userBindingSource
+            // 
+            this.userBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
             // 
             // progressBarPostsActivity
             // 
@@ -281,6 +306,103 @@ namespace WindowsFormsApplication1
             this.panelPostStatus.Size = new System.Drawing.Size(546, 26);
             this.panelPostStatus.TabIndex = 49;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(birthdayLabel);
+            this.panel1.Controls.Add(this.imageNormalPictureBox);
+            this.panel1.Controls.Add(this.nameLabel1);
+            this.panel1.Controls.Add(this.birthdayLabel1);
+            this.panel1.Controls.Add(nameLabel);
+            this.panel1.Controls.Add(this.lastNameLabel1);
+            this.panel1.Controls.Add(firstNameLabel);
+            this.panel1.Controls.Add(lastNameLabel);
+            this.panel1.Controls.Add(this.firstNameLabel1);
+            this.panel1.Location = new System.Drawing.Point(223, 249);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(401, 186);
+            this.panel1.TabIndex = 14;
+            // 
+            // nameLabel1
+            // 
+            this.nameLabel1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Name", true));
+            this.nameLabel1.Location = new System.Drawing.Point(224, 159);
+            this.nameLabel1.Name = "nameLabel1";
+            this.nameLabel1.Size = new System.Drawing.Size(100, 23);
+            this.nameLabel1.TabIndex = 9;
+            this.nameLabel1.Text = "label1";
+            // 
+            // nameLabel
+            // 
+            nameLabel.AutoSize = true;
+            nameLabel.Location = new System.Drawing.Point(143, 159);
+            nameLabel.Name = "nameLabel";
+            nameLabel.Size = new System.Drawing.Size(38, 13);
+            nameLabel.TabIndex = 8;
+            nameLabel.Text = "Name:";
+            // 
+            // lastNameLabel1
+            // 
+            this.lastNameLabel1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "LastName", true));
+            this.lastNameLabel1.Location = new System.Drawing.Point(224, 136);
+            this.lastNameLabel1.Name = "lastNameLabel1";
+            this.lastNameLabel1.Size = new System.Drawing.Size(100, 23);
+            this.lastNameLabel1.TabIndex = 7;
+            this.lastNameLabel1.Text = "label1";
+            // 
+            // lastNameLabel
+            // 
+            lastNameLabel.AutoSize = true;
+            lastNameLabel.Location = new System.Drawing.Point(143, 136);
+            lastNameLabel.Name = "lastNameLabel";
+            lastNameLabel.Size = new System.Drawing.Size(61, 13);
+            lastNameLabel.TabIndex = 6;
+            lastNameLabel.Text = "Last Name:";
+            // 
+            // imageNormalPictureBox
+            // 
+            this.imageNormalPictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.userBindingSource, "ImageNormal", true));
+            this.imageNormalPictureBox.Location = new System.Drawing.Point(3, 3);
+            this.imageNormalPictureBox.Name = "imageNormalPictureBox";
+            this.imageNormalPictureBox.Size = new System.Drawing.Size(106, 102);
+            this.imageNormalPictureBox.TabIndex = 5;
+            this.imageNormalPictureBox.TabStop = false;
+            // 
+            // birthdayLabel1
+            // 
+            this.birthdayLabel1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Birthday", true));
+            this.birthdayLabel1.Location = new System.Drawing.Point(224, 82);
+            this.birthdayLabel1.Name = "birthdayLabel1";
+            this.birthdayLabel1.Size = new System.Drawing.Size(100, 23);
+            this.birthdayLabel1.TabIndex = 1;
+            this.birthdayLabel1.Text = "label1";
+            // 
+            // firstNameLabel1
+            // 
+            this.firstNameLabel1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "FirstName", true));
+            this.firstNameLabel1.Location = new System.Drawing.Point(224, 105);
+            this.firstNameLabel1.Name = "firstNameLabel1";
+            this.firstNameLabel1.Size = new System.Drawing.Size(100, 23);
+            this.firstNameLabel1.TabIndex = 3;
+            this.firstNameLabel1.Text = "label1";
+            // 
+            // firstNameLabel
+            // 
+            firstNameLabel.AutoSize = true;
+            firstNameLabel.Location = new System.Drawing.Point(143, 105);
+            firstNameLabel.Name = "firstNameLabel";
+            firstNameLabel.Size = new System.Drawing.Size(60, 13);
+            firstNameLabel.TabIndex = 2;
+            firstNameLabel.Text = "First Name:";
+            // 
+            // birthdayLabel
+            // 
+            birthdayLabel.AutoSize = true;
+            birthdayLabel.Location = new System.Drawing.Point(143, 82);
+            birthdayLabel.Name = "birthdayLabel";
+            birthdayLabel.Size = new System.Drawing.Size(48, 13);
+            birthdayLabel.TabIndex = 0;
+            birthdayLabel.Text = "Birthday:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -302,9 +424,13 @@ namespace WindowsFormsApplication1
             this.panelUserDataPanel.PerformLayout();
             this.panelPostActivityData.ResumeLayout(false);
             this.panelPostActivityData.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
             this.panelPostStatus.ResumeLayout(false);
             this.panelPostStatus.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageNormalPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,5 +461,12 @@ namespace WindowsFormsApplication1
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panelPostStatus;
         private System.Windows.Forms.LinkLabel linkActivityData;
+        private System.Windows.Forms.BindingSource userBindingSource;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox imageNormalPictureBox;
+        private System.Windows.Forms.Label nameLabel1;
+        private System.Windows.Forms.Label birthdayLabel1;
+        private System.Windows.Forms.Label lastNameLabel1;
+        private System.Windows.Forms.Label firstNameLabel1;
     }
 }
