@@ -11,6 +11,7 @@ using System.IO;
 using System.Windows.Forms;
 using FacebookWrapper.ObjectModel;
 using FacebookWrapper;
+using System.Threading;
 
 namespace WindowsFormsApplication1
 {
@@ -21,12 +22,11 @@ namespace WindowsFormsApplication1
         private Dictionary<int, List<User>> m_FriendsBornByMonthOrYearAndByGender = new Dictionary<int, List<User>>();
 
 		/// <summary>
-        /// create director and builder
+        /// create builder
         /// </summary>
-        DirectorBirthdayList m_DirectorBirthdayList;
-        //TODO
         private BuilderBirthdayList m_BuildermonthAndFemale;
         private BuilderBirthdayList m_BuilderYearAndAllGender;
+        private BuilderBirthdayList m_BuildermonthAndMale;
         private Dictionary<string, BuilderBirthdayList> m_ConcreteBuilderOptions;
 		
         public MainForm()
@@ -88,7 +88,7 @@ namespace WindowsFormsApplication1
                     this.m_LoggedInUser = i_LoginResult.LoggedInUser;
                     this.fetchUserInfo();
                     this.switchToLogoutButton();
-                    this.InitializeBirthdayBuilder();
+                    new Thread(() => this.InitializeBirthdayBuilder()).Start();
                     this.Friend_list_SelectedIndexChanged();
                     this.listBox1_SelectedIndexChanged(); //todo
                 }
@@ -108,11 +108,12 @@ namespace WindowsFormsApplication1
 
         public void InitializeBirthdayBuilder()
         {
-            m_DirectorBirthdayList = new DirectorBirthdayList();
             m_BuildermonthAndFemale = new ConcreteBuilderBirthdayListByMonthFemaleOnly(m_LoggedInUser);
             m_BuilderYearAndAllGender = new ConcreteBuilderBirthdayListByYearAllGender(m_LoggedInUser);
-            m_ConcreteBuilderOptions.Add("friend birthdays by year all gender", m_BuilderYearAndAllGender);
-            m_ConcreteBuilderOptions.Add("friend birthdays by month Female only", m_BuildermonthAndFemale);
+            m_BuildermonthAndMale = new ConcreteBuilderBirthdayListByMonthMaleOnly(m_LoggedInUser);
+            m_ConcreteBuilderOptions.Add("Friend birthdays by year all gender", m_BuilderYearAndAllGender);
+            m_ConcreteBuilderOptions.Add("Friend birthdays by month Female only", m_BuildermonthAndFemale);
+            m_ConcreteBuilderOptions.Add("Friend birthdays by month Male only", m_BuildermonthAndMale);
         }
 
         private void logout()
@@ -250,12 +251,8 @@ namespace WindowsFormsApplication1
         {
             if (Friends_year_list.SelectedItems.Count == 1)
             {
-                listBoxNamesPerChosenYear.DisplayMember = "Name";
+                //listBoxNamesPerChosenYear.DisplayMember = "Name";
                 List<User> selectedYearFriends = this.m_FriendsBornByMonthOrYearAndByGender[i_year] as List<User>;
-                //foreach (var friend in selectedYearFriends)
-                //{
-                //    this.listBoxNamesPerChosenYear.Items.Add(friend);
-                //}
                 if (!listBoxNamesPerChosenYear.InvokeRequired)     
                 {         
                     // binding the data source of the binding source, to our data source:         
@@ -282,7 +279,8 @@ namespace WindowsFormsApplication1
                 char delimiterChars = ' ';
                 string[] words = Friends_year_list.SelectedItem.ToString().Split(delimiterChars);
                 int selectedYear = int.Parse(words[0]);
-                this.displaySelectedFriendsInYear(selectedYear);
+
+                displaySelectedFriendsInYear(selectedYear);
             }
         }
 
@@ -342,24 +340,30 @@ namespace WindowsFormsApplication1
            // Dictionary<string, BuilderBirthdayList> m_ConcreteBuilderOptions = new Dictionary<string, BuilderBirthdayList>();
             //m_ConcreteBuilderOptions.Add("friend birthdays by year all gender", m_BuilderYearAndAllGender);
             //m_ConcreteBuilderOptions.Add("friend birthdays by month Female only", m_BuildermonthAndFemale);
-            ListFriendsPresentShowOptions.Items.Add("friend birthdays by year all gender");
-            ListFriendsPresentShowOptions.Items.Add("friend birthdays by month Female only");
+            ListFriendsPresentShowOptions.Items.Add("Friend birthdays by year all gender");
+            ListFriendsPresentShowOptions.Items.Add("Friend birthdays by month Female only");
+            ListFriendsPresentShowOptions.Items.Add("Friend birthdays by month Male only");
             ListFriendsPresentShowOptions.Visible = true;
         }
         private void ListFriendsPresentShowOptions_SelectedIndexChanged(object sender, EventArgs e)
 		{
+            userBindingSource.Clear();
+
 			if (ListFriendsPresentShowOptions.SelectedItems.Count == 1)
 			{
 				string selectedModule = ListFriendsPresentShowOptions.SelectedItem.ToString();
 
-				m_DirectorBirthdayList.Construct(m_ConcreteBuilderOptions[selectedModule]);
-				BithdayListByGender birthdayList = m_ConcreteBuilderOptions[selectedModule].GetResult();
-                m_FriendsBornByMonthOrYearAndByGender = birthdayList.BirthdayList;
+                DirectorBirthdayList.Instance.Construct(m_ConcreteBuilderOptions[selectedModule]);
+                Dictionary<int, List<User>> birthdayList = m_ConcreteBuilderOptions[selectedModule].GetResult();
+                m_FriendsBornByMonthOrYearAndByGender = birthdayList;
                 this.Friends_year_list.Items.Clear();
-                foreach (KeyValuePair<int, List<User>> entry in birthdayList.BirthdayList)
+                foreach (KeyValuePair<int, List<User>> entry in birthdayList)
                 {
-                    string yearAndFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
-                    this.Friends_year_list.Items.Add(yearAndFriends);
+                    string yearOrMonthAndNumberFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
+                    if (entry.Value.Count != 0)
+                    { 
+                        this.Friends_year_list.Items.Add(yearOrMonthAndNumberFriends);
+                    }
                 }
 			}
 		}

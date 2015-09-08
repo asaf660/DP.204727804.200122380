@@ -51,7 +51,6 @@ namespace WindowsFormsApplication1
             this.linkActivityData = new System.Windows.Forms.LinkLabel();
             this.labelUserEmail = new System.Windows.Forms.Label();
             this.labelUserFullName = new System.Windows.Forms.Label();
-            this.buttonGetFriendsYears = new System.Windows.Forms.Button();
             this.panelPostActivityData = new System.Windows.Forms.Panel();
             this.labelLastVideoValue = new System.Windows.Forms.Label();
             this.labelLastVideo = new System.Windows.Forms.Label();
@@ -161,7 +160,6 @@ namespace WindowsFormsApplication1
             this.panelUserDataPanel.Controls.Add(this.linkActivityData);
             this.panelUserDataPanel.Controls.Add(this.labelUserEmail);
             this.panelUserDataPanel.Controls.Add(this.labelUserFullName);
-            this.panelUserDataPanel.Controls.Add(this.buttonGetFriendsYears);
             this.panelUserDataPanel.Controls.Add(this.panelPostActivityData);
             this.panelUserDataPanel.Controls.Add(this.UserPictureBox);
             this.panelUserDataPanel.Controls.Add(this.listBoxNamesPerChosenYear);
@@ -177,7 +175,7 @@ namespace WindowsFormsApplication1
             this.ListFriendsPresentShowOptions.FormattingEnabled = true;
             this.ListFriendsPresentShowOptions.Location = new System.Drawing.Point(101, 140);
             this.ListFriendsPresentShowOptions.Name = "ListFriendsPresentShowOptions";
-            this.ListFriendsPresentShowOptions.Size = new System.Drawing.Size(120, 95);
+            this.ListFriendsPresentShowOptions.Size = new System.Drawing.Size(190, 43);
             this.ListFriendsPresentShowOptions.TabIndex = 15;
             this.ListFriendsPresentShowOptions.SelectedIndexChanged += new System.EventHandler(this.ListFriendsPresentShowOptions_SelectedIndexChanged);
             // 
@@ -274,16 +272,6 @@ namespace WindowsFormsApplication1
             this.labelUserFullName.Size = new System.Drawing.Size(55, 13);
             this.labelUserFullName.TabIndex = 10;
             this.labelUserFullName.Text = "(full name)";
-            // 
-            // buttonGetFriendsYears
-            // 
-            this.buttonGetFriendsYears.Location = new System.Drawing.Point(6, 208);
-            this.buttonGetFriendsYears.Name = "buttonGetFriendsYears";
-            this.buttonGetFriendsYears.Size = new System.Drawing.Size(70, 35);
-            this.buttonGetFriendsYears.TabIndex = 9;
-            this.buttonGetFriendsYears.Text = "Friends Birthdays";
-            this.buttonGetFriendsYears.UseVisualStyleBackColor = true;
-            this.buttonGetFriendsYears.Click += new System.EventHandler(this.buttonGetFriendsYears_Click);
             // 
             // panelPostActivityData
             // 
@@ -464,7 +452,6 @@ namespace WindowsFormsApplication1
         private System.Windows.Forms.Label labelLastStatusValue;
         private System.Windows.Forms.Label labelLastStatus;
         private System.Windows.Forms.ProgressBar progressBarPostsActivity;
-        private System.Windows.Forms.Button buttonGetFriendsYears;
         private System.Windows.Forms.Label labelUserEmail;
         private System.Windows.Forms.Label labelUserFullName;
         private System.Windows.Forms.TextBox textBoxStatus;
