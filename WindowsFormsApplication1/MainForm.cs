@@ -9,9 +9,9 @@ using System.Text;
 using System.Xml.Serialization;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading;
 using FacebookWrapper.ObjectModel;
 using FacebookWrapper;
-using System.Threading;
 
 namespace WindowsFormsApplication1
 {
@@ -40,7 +40,7 @@ namespace WindowsFormsApplication1
             this.Size = AppConfig.Instance.LastWindowSize;
             this.Location = AppConfig.Instance.LastWindowLocation;
             checkBoxAutomaticLogin.Checked = AppConfig.Instance.AutoConnect;
-            m_ConcreteBuilderOptions = new Dictionary<string, BuilderBirthdayList>();
+            this.m_ConcreteBuilderOptions = new Dictionary<string, BuilderBirthdayList>();
 
             if (checkBoxAutomaticLogin.Checked)
             {
@@ -57,10 +57,7 @@ namespace WindowsFormsApplication1
                     }
                 }
             }
-        }
-
-		
-       
+        }       
 
         private void tryLogin()
         {
@@ -90,7 +87,7 @@ namespace WindowsFormsApplication1
                     this.switchToLogoutButton();
                     new Thread(() => this.InitializeBirthdayBuilder()).Start();
                     this.Friend_list_SelectedIndexChanged();
-                    this.listBox1_SelectedIndexChanged(); //todo
+                    this.InitializePresentShowOptions();
                 }
                 else
                 {
@@ -101,19 +98,18 @@ namespace WindowsFormsApplication1
 
         private void buttonSetStatus_Click(object sender, EventArgs e)
         {
-            Status postedStatus = m_LoggedInUser.PostStatus(textBoxStatus.Text);
+            Status postedStatus = this.m_LoggedInUser.PostStatus(textBoxStatus.Text);
             MessageBox.Show("Status Posted! ID: " + postedStatus.Id);
-
         }
 
         public void InitializeBirthdayBuilder()
         {
-            m_BuildermonthAndFemale = new ConcreteBuilderBirthdayListByMonthFemaleOnly(m_LoggedInUser);
-            m_BuilderYearAndAllGender = new ConcreteBuilderBirthdayListByYearAllGender(m_LoggedInUser);
-            m_BuildermonthAndMale = new ConcreteBuilderBirthdayListByMonthMaleOnly(m_LoggedInUser);
-            m_ConcreteBuilderOptions.Add("Friend birthdays by year all gender", m_BuilderYearAndAllGender);
-            m_ConcreteBuilderOptions.Add("Friend birthdays by month Female only", m_BuildermonthAndFemale);
-            m_ConcreteBuilderOptions.Add("Friend birthdays by month Male only", m_BuildermonthAndMale);
+            this.m_BuildermonthAndFemale = new ConcreteBuilderBirthdayListByMonthFemaleOnly(this.m_LoggedInUser);
+            this.m_BuilderYearAndAllGender = new ConcreteBuilderBirthdayListByYearAllGender(this.m_LoggedInUser);
+            this.m_BuildermonthAndMale = new ConcreteBuilderBirthdayListByMonthMaleOnly(this.m_LoggedInUser);
+            this.m_ConcreteBuilderOptions.Add("Friend birthdays by year all gender", this.m_BuilderYearAndAllGender);
+            this.m_ConcreteBuilderOptions.Add("Friend birthdays by month Female only", this.m_BuildermonthAndFemale);
+            this.m_ConcreteBuilderOptions.Add("Friend birthdays by month Male only", this.m_BuildermonthAndMale);
         }
 
         private void logout()
@@ -251,9 +247,8 @@ namespace WindowsFormsApplication1
         {
             if (Friends_year_list.SelectedItems.Count == 1)
             {
-                //listBoxNamesPerChosenYear.DisplayMember = "Name";
                 List<User> selectedYearFriends = this.m_FriendsBornByMonthOrYearAndByGender[i_year] as List<User>;
-                if (!listBoxNamesPerChosenYear.InvokeRequired)     
+                if (!listBoxFriemdsPerChosenYearOrMonth.InvokeRequired)     
                 {         
                     // binding the data source of the binding source, to our data source:         
                     userBindingSource.DataSource = selectedYearFriends;     
@@ -261,7 +256,7 @@ namespace WindowsFormsApplication1
                 else     
                 {         
                     // In case of cross-thread operation, invoking the binding code on the listBox's thread:         
-                    listBoxNamesPerChosenYear.Invoke(new Action(() => userBindingSource.DataSource = selectedYearFriends));     
+                    listBoxFriemdsPerChosenYearOrMonth.Invoke(new Action(() => userBindingSource.DataSource = selectedYearFriends));     
                 }
             }
         }
@@ -275,12 +270,12 @@ namespace WindowsFormsApplication1
         {
             if (Friends_year_list.SelectedItems.Count == 1)
             {
-                listBoxNamesPerChosenYear.Visible = true;
+                listBoxFriemdsPerChosenYearOrMonth.Visible = true;
                 char delimiterChars = ' ';
                 string[] words = Friends_year_list.SelectedItem.ToString().Split(delimiterChars);
                 int selectedYear = int.Parse(words[0]);
 
-                displaySelectedFriendsInYear(selectedYear);
+                this.displaySelectedFriendsInYear(selectedYear);
             }
         }
 
@@ -322,8 +317,7 @@ namespace WindowsFormsApplication1
                     if (o_FriendsBornPerYear.Count != 0)
                     {
                         this.Friend_list_SelectedIndexChanged();
-						this.listBox1_SelectedIndexChanged();
-                        //this.ListFriendsPresentShowOptions_SelectedIndexChanged();
+                        this.InitializePresentShowOptions();
                     }
                     else
                     {
@@ -332,19 +326,15 @@ namespace WindowsFormsApplication1
                 }
             }
         }
-		
-		private void listBox1_SelectedIndexChanged()
+
+        private void InitializePresentShowOptions()
         {
-            BuilderBirthdayList m_BuildermonthAndFemale = new ConcreteBuilderBirthdayListByMonthFemaleOnly(m_LoggedInUser);
-            BuilderBirthdayList m_BuilderYearAndAllGender = new ConcreteBuilderBirthdayListByYearAllGender(m_LoggedInUser);
-           // Dictionary<string, BuilderBirthdayList> m_ConcreteBuilderOptions = new Dictionary<string, BuilderBirthdayList>();
-            //m_ConcreteBuilderOptions.Add("friend birthdays by year all gender", m_BuilderYearAndAllGender);
-            //m_ConcreteBuilderOptions.Add("friend birthdays by month Female only", m_BuildermonthAndFemale);
             ListFriendsPresentShowOptions.Items.Add("Friend birthdays by year all gender");
             ListFriendsPresentShowOptions.Items.Add("Friend birthdays by month Female only");
             ListFriendsPresentShowOptions.Items.Add("Friend birthdays by month Male only");
             ListFriendsPresentShowOptions.Visible = true;
         }
+        
         private void ListFriendsPresentShowOptions_SelectedIndexChanged(object sender, EventArgs e)
 		{
             userBindingSource.Clear();
@@ -352,12 +342,10 @@ namespace WindowsFormsApplication1
 			if (ListFriendsPresentShowOptions.SelectedItems.Count == 1)
 			{
 				string selectedModule = ListFriendsPresentShowOptions.SelectedItem.ToString();
-
-                DirectorBirthdayList.Instance.Construct(m_ConcreteBuilderOptions[selectedModule]);
-                Dictionary<int, List<User>> birthdayList = m_ConcreteBuilderOptions[selectedModule].GetResult();
-                m_FriendsBornByMonthOrYearAndByGender = birthdayList;
+                DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[selectedModule]);
+                this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[selectedModule].GetResult();
                 this.Friends_year_list.Items.Clear();
-                foreach (KeyValuePair<int, List<User>> entry in birthdayList)
+                foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
                 {
                     string yearOrMonthAndNumberFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
                     if (entry.Value.Count != 0)

@@ -32,24 +32,26 @@ namespace WindowsFormsApplication1
         public abstract string PrintPeriod();
 
         protected DateTime SinceDate { get; set; }
+        
         protected DateTime ToDate { get; set; }
     }
 
-    public class RecentPeriod : Period {
+    public class RecentPeriod : Period 
+    {
         public RecentPeriod(DateTime i_SinceDate, DateTime i_ToDate)
         {
-            SinceDate = i_SinceDate;
-            ToDate = i_ToDate;
+            this.SinceDate = i_SinceDate;
+            this.ToDate = i_ToDate;
         }
 
         public override string PrintPeriod()
         {
-            TimeSpan timeSpan = ToDate.Subtract(SinceDate);
+            TimeSpan timeSpan = ToDate.Subtract(this.SinceDate);
             string periodString = string.Empty;
 
             if (timeSpan.Days > 6)
             {
-                periodString = string.Format("{0} days ago, on {1:dd/MM/yy}", timeSpan.Days, SinceDate);
+                periodString = string.Format("{0} days ago, on {1:dd/MM/yy}", timeSpan.Days, this.SinceDate);
             }
             else
             {
@@ -58,14 +60,14 @@ namespace WindowsFormsApplication1
                     switch (timeSpan.Days)
                     {
                         case 1:
-                            periodString = string.Format("yesterday on {0:H:mm}", SinceDate);
+                            periodString = string.Format("yesterday on {0:H:mm}", this.SinceDate);
                             break;
                         case 2:
                         case 3:
                         case 4:
                         case 5:
                         case 6:
-                            periodString = string.Format("on {0:dddd H:mm}", SinceDate);
+                            periodString = string.Format("on {0:dddd H:mm}", this.SinceDate);
                             break;
                     }
                 }
@@ -94,13 +96,13 @@ namespace WindowsFormsApplication1
     {
         public DistantPeriod(DateTime i_SinceDate, DateTime i_ToDate)
         {
-            SinceDate = i_SinceDate;
-            ToDate = i_ToDate;
+            this.SinceDate = i_SinceDate;
+            this.ToDate = i_ToDate;
         }
 
         public override string PrintPeriod()
         {
-            TimeSpan timeSpan = ToDate.Subtract(SinceDate);
+            TimeSpan timeSpan = ToDate.Subtract(this.SinceDate);
             string periodString = string.Empty;
 
             if (timeSpan.TotalDays >= 365)
