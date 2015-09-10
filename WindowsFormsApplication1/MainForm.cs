@@ -337,6 +337,7 @@ namespace WindowsFormsApplication1
         private void ConstructList(string i_SelectedModule)
         {
             userBindingSource.Clear();
+            userBindingSource.Clear();
             DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[i_SelectedModule]);
             this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[i_SelectedModule].GetResult();
                 this.ListYearOrMonthNumOfFriends.Items.Clear();
