@@ -38,12 +38,11 @@ namespace WindowsFormsApplication1
             }
         }
 
-        public Dictionary<int, List<User>> Construct(BuilderBirthdayList builder)
+        public void Construct(BuilderBirthdayList builder)
         {
             m_BirthdayList = new Dictionary<int, List<User>>();
             builder.BuildBirthdayListByMonthOrYear(ref m_BirthdayList);
             builder.BuildByGender(ref m_BirthdayList);
-            return m_BirthdayList;
         }
     }
 

@@ -87,7 +87,6 @@ namespace WindowsFormsApplication1
                     this.switchToLogoutButton();
                     new Thread(() => this.InitializeBirthdayBuilder()).Start();
                     this.Friend_list_SelectedIndexChanged();
-                    this.InitializePresentShowOptions();
                 }
                 else
                 {
@@ -235,17 +234,17 @@ namespace WindowsFormsApplication1
 
         private void Friend_list_SelectedIndexChanged()
         {
-            this.Friends_year_list.Items.Clear();
+            this.ListYearOrMonthNumOfFriends.Items.Clear();
             foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
             {
                 string yearAndFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
-                this.Friends_year_list.Items.Add(yearAndFriends);
+                this.ListYearOrMonthNumOfFriends.Items.Add(yearAndFriends);
             }
         }
 
         private void displaySelectedFriendsInYear(int i_year)
         {
-            if (Friends_year_list.SelectedItems.Count == 1)
+            if (ListYearOrMonthNumOfFriends.SelectedItems.Count == 1)
             {
                 List<User> selectedYearFriends = this.m_FriendsBornByMonthOrYearAndByGender[i_year] as List<User>;
                 if (!listBoxFriemdsPerChosenYearOrMonth.InvokeRequired)     
@@ -268,11 +267,11 @@ namespace WindowsFormsApplication1
 
         private void Friends_year_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Friends_year_list.SelectedItems.Count == 1)
+            if (ListYearOrMonthNumOfFriends.SelectedItems.Count == 1)
             {
                 listBoxFriemdsPerChosenYearOrMonth.Visible = true;
                 char delimiterChars = ' ';
-                string[] words = Friends_year_list.SelectedItem.ToString().Split(delimiterChars);
+                string[] words = ListYearOrMonthNumOfFriends.SelectedItem.ToString().Split(delimiterChars);
                 int selectedYear = int.Parse(words[0]);
 
                 this.displaySelectedFriendsInYear(selectedYear);
@@ -317,7 +316,6 @@ namespace WindowsFormsApplication1
                     if (o_FriendsBornPerYear.Count != 0)
                     {
                         this.Friend_list_SelectedIndexChanged();
-                        this.InitializePresentShowOptions();
                     }
                     else
                     {
@@ -327,35 +325,6 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void InitializePresentShowOptions()
-        {
-            ListFriendsPresentShowOptions.Items.Add("Friend birthdays by year all gender");
-            ListFriendsPresentShowOptions.Items.Add("Friend birthdays by month Female only");
-            ListFriendsPresentShowOptions.Items.Add("Friend birthdays by month Male only");
-            ListFriendsPresentShowOptions.Visible = true;
-        }
-        
-        private void ListFriendsPresentShowOptions_SelectedIndexChanged(object sender, EventArgs e)
-		{
-            userBindingSource.Clear();
-
-			if (ListFriendsPresentShowOptions.SelectedItems.Count == 1)
-			{
-				string selectedModule = ListFriendsPresentShowOptions.SelectedItem.ToString();
-                DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[selectedModule]);
-                this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[selectedModule].GetResult();
-                this.Friends_year_list.Items.Clear();
-                foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
-                {
-                    string yearOrMonthAndNumberFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
-                    if (entry.Value.Count != 0)
-                    { 
-                        this.Friends_year_list.Items.Add(yearOrMonthAndNumberFriends);
-                    }
-                }
-			}
-		}
-
         private void linkActivityData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             BackgroundWorker fetchActivitiesBackgroundWorker = new BackgroundWorker();
@@ -363,6 +332,61 @@ namespace WindowsFormsApplication1
             fetchActivitiesBackgroundWorker.RunWorkerCompleted += this.fetchPostActivityBackgroundWorkerRunWorkerCompleted;
             progressBarPostsActivity.Visible = true;
             fetchActivitiesBackgroundWorker.RunWorkerAsync();
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            /*userBindingSource.Clear();
+
+            if (ListFriendsPresentShowOptions.SelectedItems.Count == 1)
+            {
+                string selectedModule = ListFriendsPresentShowOptions.SelectedItem.ToString();
+                DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[selectedModule]);
+                this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[selectedModule].GetResult();
+                this.ListYearOrMonthNumOfFriends.Items.Clear();
+                foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
+                {
+                    string yearOrMonthAndNumberFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
+                    if (entry.Value.Count != 0)
+                    {
+                        this.ListYearOrMonthNumOfFriends.Items.Add(yearOrMonthAndNumberFriends);
+                    }
+                }
+            }*/
+        }
+
+        private void ConstructList(string i_SelectedModule)
+        {
+            userBindingSource.Clear();
+            DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[i_SelectedModule]);
+            this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[i_SelectedModule].GetResult();
+                this.ListYearOrMonthNumOfFriends.Items.Clear();
+                foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
+                {
+                    string yearOrMonthAndNumberFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
+                    if (entry.Value.Count != 0)
+                    {
+                        this.ListYearOrMonthNumOfFriends.Items.Add(yearOrMonthAndNumberFriends);
+                    }
+                }
+        }
+
+        private void RadioRadioButtonYearAllGender_CheckedChanged(object sender, EventArgs e)
+        {
+            string selectedModule = radioRadioButtonYearAllGender.Text;
+            ConstructList(selectedModule);
+        }
+
+        private void RadioButtonMonthFemaleOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            string selectedModule = RadioButtonMonthFemaleOnly.Text;
+            this.ConstructList(selectedModule);
+        }
+
+        private void RadioButtonMonthMaleOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            string selectedModule = RadioButtonMonthMaleOnly.Text;
+            ConstructList(selectedModule);
         }
     }
 }
