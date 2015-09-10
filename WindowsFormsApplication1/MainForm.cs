@@ -334,27 +334,6 @@ namespace WindowsFormsApplication1
             fetchActivitiesBackgroundWorker.RunWorkerAsync();
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            /*userBindingSource.Clear();
-
-            if (ListFriendsPresentShowOptions.SelectedItems.Count == 1)
-            {
-                string selectedModule = ListFriendsPresentShowOptions.SelectedItem.ToString();
-                DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[selectedModule]);
-                this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[selectedModule].GetResult();
-                this.ListYearOrMonthNumOfFriends.Items.Clear();
-                foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
-                {
-                    string yearOrMonthAndNumberFriends = entry.Key.ToString() + " - " + entry.Value.Count.ToString();
-                    if (entry.Value.Count != 0)
-                    {
-                        this.ListYearOrMonthNumOfFriends.Items.Add(yearOrMonthAndNumberFriends);
-                    }
-                }
-            }*/
-        }
-
         private void ConstructList(string i_SelectedModule)
         {
             userBindingSource.Clear();
