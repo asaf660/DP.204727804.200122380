@@ -337,9 +337,10 @@ namespace WindowsFormsApplication1
         private void ConstructList(string i_SelectedModule)
         {
             userBindingSource.Clear();
-            userBindingSource.Clear();
-            DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[i_SelectedModule]);
-            this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[i_SelectedModule].GetResult();
+            try
+            {
+                DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[i_SelectedModule]);
+                this.m_FriendsBornByMonthOrYearAndByGender = this.m_ConcreteBuilderOptions[i_SelectedModule].GetResult();
                 this.ListYearOrMonthNumOfFriends.Items.Clear();
                 foreach (KeyValuePair<int, List<User>> entry in this.m_FriendsBornByMonthOrYearAndByGender)
                 {
@@ -349,6 +350,11 @@ namespace WindowsFormsApplication1
                         this.ListYearOrMonthNumOfFriends.Items.Add(yearOrMonthAndNumberFriends);
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         private void RadioRadioButtonYearAllGender_CheckedChanged(object sender, EventArgs e)
