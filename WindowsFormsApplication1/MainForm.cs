@@ -250,12 +250,12 @@ namespace WindowsFormsApplication1
                 if (!listBoxFriemdsPerChosenYearOrMonth.InvokeRequired)     
                 {         
                     // binding the data source of the binding source, to our data source:         
-                    userBindingSource.DataSource = selectedYearFriends;     
+                    friendsBindingSource.DataSource = selectedYearFriends;     
                 }     
                 else     
                 {         
                     // In case of cross-thread operation, invoking the binding code on the listBox's thread:         
-                    listBoxFriemdsPerChosenYearOrMonth.Invoke(new Action(() => userBindingSource.DataSource = selectedYearFriends));     
+                    listBoxFriemdsPerChosenYearOrMonth.Invoke(new Action(() => friendsBindingSource.DataSource = selectedYearFriends));     
                 }
             }
         }
@@ -336,7 +336,7 @@ namespace WindowsFormsApplication1
 
         private void ConstructList(string i_SelectedModule)
         {
-            userBindingSource.Clear();
+            friendsBindingSource.Clear();
             try
             {
                 DirectorBirthdayList.Instance.Construct(this.m_ConcreteBuilderOptions[i_SelectedModule]);
@@ -374,5 +374,34 @@ namespace WindowsFormsApplication1
             string selectedModule = RadioButtonMonthMaleOnly.Text;
             ConstructList(selectedModule);
         }
+
+        private void linkFetchStatuses_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            FacebookObjectCollection<Post> posts = null;
+            listStatuses.DisplayMember = "DisplayText";
+            BackgroundWorker fetchStatusesBackgroundWorker = new BackgroundWorker();
+            fetchStatusesBackgroundWorker.DoWork += (senderObject, args) => posts = m_LoggedInUser.Posts;
+            fetchStatusesBackgroundWorker.RunWorkerCompleted += delegate(object senderObject, RunWorkerCompletedEventArgs args)
+            {
+                List<PostProxy> postsForList = new List<PostProxy>();
+                foreach (Post post in posts)
+                {
+                    postsForList.Add(new PostProxy(post));
+                    //listStatuses.Items.Add(new PostProxy(post));
+                }
+
+                statusesBindingSource.DataSource = postsForList;
+                progressBarPostsActivity.Visible = false;
+            };
+
+            progressBarPostsActivity.Visible = true;
+            fetchStatusesBackgroundWorker.RunWorkerAsync();   
+        }
+
+        //private void fetchStatusesBackgroundWorkerRunWorkerCompleted
+        //{
+        //    progressBarPostsActivity.Visible = false;
+        //    panelPostActivityData.Visible = true;
+        //}
     }
 }
