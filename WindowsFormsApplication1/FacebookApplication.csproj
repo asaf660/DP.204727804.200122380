@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
     <Compile Include="Builder.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="PeriodOfTime.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

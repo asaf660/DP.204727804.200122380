@@ -28,6 +28,7 @@ namespace WindowsFormsApplication1
         private BuilderBirthdayList m_BuilderYearAndAllGender;
         private BuilderBirthdayList m_BuildermonthAndMale;
         private Dictionary<string, BuilderBirthdayList> m_ConcreteBuilderOptions;
+        private Dictionary<string, Filter<User>> m_LikersFilters;
 		
         public MainForm()
         {
@@ -41,6 +42,18 @@ namespace WindowsFormsApplication1
             this.Location = AppConfig.Instance.LastWindowLocation;
             checkBoxAutomaticLogin.Checked = AppConfig.Instance.AutoConnect;
             this.m_ConcreteBuilderOptions = new Dictionary<string, BuilderBirthdayList>();
+
+            m_LikersFilters = new Dictionary<string, Filter<User>>()
+            {
+                {"Gender", new Filter<User>()},
+                {"Name", new Filter<User>()}
+            };
+
+            string[] filtersKeys = m_LikersFilters.Keys.ToArray();
+            for (int i = 0; i < filtersKeys.Length - 1; i++)
+            {
+                m_LikersFilters[filtersKeys[i]].SetNextFilter(m_LikersFilters[filtersKeys[i + 1]]);
+            }
 
             if (checkBoxAutomaticLogin.Checked)
             {
@@ -106,6 +119,7 @@ namespace WindowsFormsApplication1
             this.m_BuildermonthAndFemale = new ConcreteBuilderBirthdayListByMonthFemaleOnly(this.m_LoggedInUser);
             this.m_BuilderYearAndAllGender = new ConcreteBuilderBirthdayListByYearAllGender(this.m_LoggedInUser);
             this.m_BuildermonthAndMale = new ConcreteBuilderBirthdayListByMonthMaleOnly(this.m_LoggedInUser);
+            this.m_ConcreteBuilderOptions.Clear();
             this.m_ConcreteBuilderOptions.Add("Friend birthdays by year all gender", this.m_BuilderYearAndAllGender);
             this.m_ConcreteBuilderOptions.Add("Friend birthdays by month Female only", this.m_BuildermonthAndFemale);
             this.m_ConcreteBuilderOptions.Add("Friend birthdays by month Male only", this.m_BuildermonthAndMale);
@@ -396,6 +410,57 @@ namespace WindowsFormsApplication1
 
             progressBarPostsActivity.Visible = true;
             fetchStatusesBackgroundWorker.RunWorkerAsync();   
+        }
+
+        private void listStatuses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listLikers.DisplayMember = "Name";
+            likersBindingSource.DataSource = getAllFriendLikers();
+        }
+
+        private List<User> getAllFriendLikers()
+        {
+            List<User> likers = (statusesBindingSource.Current as PostProxy).Post.LikedBy.ToList();
+            List<User> friendLikers = new List<User>();
+
+            foreach (User liker in likers)
+            {
+                User friend = this.m_LoggedInUser.Friends.Find((user) => user.Id.Equals(liker.Id));
+                if (friend != null)
+                {
+                    friendLikers.Add(friend);
+                }
+            }
+
+            return friendLikers;
+        }
+
+        private void changeFilter(string i_FilterKey, Func<User, bool> i_FilterCondition)
+        {
+            ICollection<User> likers = (ICollection<User>)getAllFriendLikers();
+            m_LikersFilters[i_FilterKey].Condition = i_FilterCondition;
+            m_LikersFilters[m_LikersFilters.Keys.First()].ProcessFilters(ref likers);
+            likersBindingSource.DataSource = likers;
+        }
+
+        private void linkAllGenders_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            changeFilter("Gender", (user) => true);
+        }
+
+        private void linkByGenderMale_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            changeFilter("Gender", (user) => user.Gender == User.eGender.male);
+        }
+
+        private void linkByGenderFemale_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            changeFilter("Gender", (user) => user.Gender == User.eGender.female);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            changeFilter("Gender", (user) => user.Name.Contains((sender as TextBox).Text));
         }
 
         //private void fetchStatusesBackgroundWorkerRunWorkerCompleted

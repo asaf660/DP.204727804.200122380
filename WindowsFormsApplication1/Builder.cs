@@ -49,7 +49,6 @@ namespace WindowsFormsApplication1
     public abstract class BuilderBirthdayList
     {
         protected FacebookObjectCollection<User> m_Friends;
-        protected User m_LoggedinUser;
         protected Dictionary<int, List<User>> m_BirthdayList;
 
         public abstract void BuildBirthdayListByMonthOrYear(ref Dictionary<int, List<User>> io_BirthdayList);
@@ -60,7 +59,6 @@ namespace WindowsFormsApplication1
 
         public BuilderBirthdayList(User i_LoggedInUser)
         {
-            m_LoggedinUser = i_LoggedInUser;
             m_Friends = i_LoggedInUser.Friends;
         }
 
