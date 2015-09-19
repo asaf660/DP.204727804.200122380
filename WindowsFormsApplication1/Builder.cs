@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Facebook;
-using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
+using System.Collections;
+using System.Linq;
 
 namespace WindowsFormsApplication1
 {
@@ -13,7 +12,7 @@ namespace WindowsFormsApplication1
     {
         private static DirectorBirthdayList s_Instance = null;
         private static object s_LockObj = new Object();
-        private Dictionary<int, List<User>> m_BirthdayList;
+        private BirthdayListWrapper m_BirthdayList;
 
         private DirectorBirthdayList() 
         { 
@@ -40,9 +39,44 @@ namespace WindowsFormsApplication1
 
         public void Construct(BuilderBirthdayList builder)
         {
-            m_BirthdayList = new Dictionary<int, List<User>>();
+            m_BirthdayList = new BirthdayListWrapper();
             builder.BuildBirthdayListByMonthOrYear(ref m_BirthdayList);
             builder.BuildByGender(ref m_BirthdayList);
+        }
+    }
+
+    public class BirthdayListWrapper : IEnumerable<IEnumerable<User>>
+    {
+        public Dictionary<int, List<User>> m_BirthdayList;
+        
+        public BirthdayListWrapper()
+        {
+            m_BirthdayList = new Dictionary<int, List<User>>();
+        }
+
+        public void Remove(Dictionary<int, List<User>> m_FriendsToRemove)
+        {
+            foreach (KeyValuePair<int,List<User>> KeyValue in m_FriendsToRemove)
+            {
+                int Currkey = KeyValue.Key;
+                foreach (User user in m_FriendsToRemove[Currkey])
+                {
+                        m_BirthdayList[Currkey].Remove(user);
+                }
+            }
+        }
+
+        IEnumerator<IEnumerable<User>> IEnumerable<IEnumerable<User>>.GetEnumerator()
+        {
+            foreach (int key in m_BirthdayList.Keys)
+            {
+                yield return m_BirthdayList[key];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<IEnumerable<User>>)this).GetEnumerator();
         }
     }
 
@@ -50,11 +84,11 @@ namespace WindowsFormsApplication1
     {
         protected FacebookObjectCollection<User> m_Friends;
         protected User m_LoggedinUser;
-        protected Dictionary<int, List<User>> m_BirthdayList;
+        protected BirthdayListWrapper m_BirthdayList;
 
-        public abstract void BuildBirthdayListByMonthOrYear(ref Dictionary<int, List<User>> io_BirthdayList);
+        public abstract void BuildBirthdayListByMonthOrYear(ref BirthdayListWrapper io_BirthdayList);
 
-        public abstract void BuildByGender(ref Dictionary<int, List<User>> io_BirthdayList);
+        public abstract void BuildByGender(ref BirthdayListWrapper io_BirthdayList);
 
         public abstract Dictionary<int, List<User>> GetResult();
 
@@ -64,11 +98,10 @@ namespace WindowsFormsApplication1
             m_Friends = i_LoggedInUser.Friends;
         }
 
-        protected void BuildBirthdayListByMonthOrYear(ref Dictionary<int, List<User>> io_BirthdayList, string GetMonthOrGetYear)
+        protected void BuildBirthdayListByMonthOrYear(ref BirthdayListWrapper io_BirthdayList, string GetMonthOrGetYear)
         {
             Dictionary<int, List<User>> o_FriendsBornPerMonth = new Dictionary<int, List<User>>();
             int friendMonthOrYearBorn;
-            m_BirthdayList = new Dictionary<int, List<User>>();
             if (m_Friends.Count == 0)
             {
                 MessageBox.Show("No Friends Birthday's to retrieve :(");
@@ -96,7 +129,7 @@ namespace WindowsFormsApplication1
                         }
                     }
 
-                    io_BirthdayList = o_FriendsBornPerMonth;
+                    io_BirthdayList.m_BirthdayList = o_FriendsBornPerMonth;
                 }
             }
 
@@ -126,19 +159,34 @@ namespace WindowsFormsApplication1
             return o_month;
         }
 
-        protected void BuilderBirthdayListByGender(ref Dictionary<int, List<User>> io_BirthdayList, User.eGender i_GenderToInclude)
+        protected void BuilderBirthdayListByGender(ref BirthdayListWrapper io_BirthdayList, User.eGender i_GenderToInclude)
         {
-            foreach (KeyValuePair<int, List<User>> pair in io_BirthdayList.ToList())
+            Dictionary<int, List<User>> FriendToRemoveByCondition = new Dictionary<int, List<User>>();
+            
+            foreach (var listOfFriendsPerYearOrMonth in io_BirthdayList)
             {
-                foreach (User friend in pair.Value.ToList())
+                int i;
+                foreach (User friend in listOfFriendsPerYearOrMonth)
                 {
                     if (friend.Gender != i_GenderToInclude)
                     {
-                        pair.Value.Remove(friend);
+                        List<User> existing = new List<User>();
+                        int Currkey = io_BirthdayList.m_BirthdayList.FirstOrDefault(x => x.Value == listOfFriendsPerYearOrMonth).Key;
+                        if (!FriendToRemoveByCondition.TryGetValue(Currkey, out existing))
+                        {
+                            existing = new List<User>();
+                            existing.Add(friend);
+                            FriendToRemoveByCondition[Currkey] = existing;
+                        }
+                        else
+                        {
+                            FriendToRemoveByCondition[Currkey].Add(friend);
+                        }
                     }
                 }
             }
 
+            io_BirthdayList.Remove(FriendToRemoveByCondition);
             this.m_BirthdayList = io_BirthdayList;
         }
     }
@@ -149,12 +197,12 @@ namespace WindowsFormsApplication1
         {
         }
 
-        public override void BuildBirthdayListByMonthOrYear(ref Dictionary<int, List<User>> io_BirthdayList)
+        public override void BuildBirthdayListByMonthOrYear(ref BirthdayListWrapper io_BirthdayList)
         {
             base.BuildBirthdayListByMonthOrYear(ref io_BirthdayList, "Month");
         }
 
-        public override void BuildByGender(ref Dictionary<int, List<User>> io_BirthdayList)
+        public override void BuildByGender(ref BirthdayListWrapper io_BirthdayList)
         {
             this.BuilderBirthdayListByGender(ref io_BirthdayList, User.eGender.female);
             this.m_BirthdayList = io_BirthdayList;
@@ -162,7 +210,7 @@ namespace WindowsFormsApplication1
 
         public override Dictionary<int, List<User>> GetResult()
         {
-            return this.m_BirthdayList;
+            return this.m_BirthdayList.m_BirthdayList;
         }
     }
 
@@ -173,12 +221,12 @@ namespace WindowsFormsApplication1
         {
         }
 
-        public override void BuildBirthdayListByMonthOrYear(ref Dictionary<int, List<User>> io_BirthdayList)
+        public override void BuildBirthdayListByMonthOrYear(ref BirthdayListWrapper io_BirthdayList)
         {
             base.BuildBirthdayListByMonthOrYear(ref io_BirthdayList, "Month");
         }
-        
-        public override void BuildByGender(ref Dictionary<int, List<User>> io_BirthdayList)
+
+        public override void BuildByGender(ref BirthdayListWrapper io_BirthdayList)
         {
             this.BuilderBirthdayListByGender(ref io_BirthdayList, User.eGender.male);
             this.m_BirthdayList = io_BirthdayList;
@@ -186,7 +234,7 @@ namespace WindowsFormsApplication1
 
         public override Dictionary<int, List<User>> GetResult()
         {
-            return this.m_BirthdayList;
+            return this.m_BirthdayList.m_BirthdayList;
         }
     }
 
@@ -196,19 +244,19 @@ namespace WindowsFormsApplication1
         {
         }
 
-        public override void BuildBirthdayListByMonthOrYear(ref Dictionary<int, List<User>> io_BirthdayList)
+        public override void BuildBirthdayListByMonthOrYear(ref BirthdayListWrapper io_BirthdayList)
         {
             base.BuildBirthdayListByMonthOrYear(ref io_BirthdayList, "Year");
         }
 
-        public override void BuildByGender(ref Dictionary<int, List<User>> io_BirthdayList)
+        public override void BuildByGender(ref BirthdayListWrapper io_BirthdayList)
         {
             this.m_BirthdayList = io_BirthdayList;
         }
 
         public override Dictionary<int, List<User>> GetResult()
         {
-            return this.m_BirthdayList;
+            return this.m_BirthdayList.m_BirthdayList;
         }
     }
 }
