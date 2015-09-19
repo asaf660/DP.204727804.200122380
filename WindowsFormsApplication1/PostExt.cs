@@ -22,7 +22,18 @@ namespace WindowsFormsApplication1
             {
                 if (string.IsNullOrEmpty(m_DisplayText))
                 {
-                    m_DisplayText = string.Format("[{0}]\t {1}", Enum.GetName(typeof(Post.eType), Post.Type), Post.Message);
+                    Post.eType? type = Post.Type;
+                    string typeString;
+                    if (type == null)
+                    {
+                        typeString = "";
+                    }
+                    else
+                    {
+                        typeString = Enum.GetName(typeof(Post.eType), Post.Type);
+                    }
+
+                    m_DisplayText = string.Format("[{0}]\t {1}", typeString, Post.Message);
                 }
 
                 return m_DisplayText;
