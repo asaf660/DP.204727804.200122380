@@ -45,6 +45,12 @@ namespace WindowsFormsApplication1
             this.buttonLogin = new System.Windows.Forms.Button();
             this.panelUserDataPanel = new System.Windows.Forms.Panel();
             this.groupBoxLikes = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.imageSquarePictureBox = new System.Windows.Forms.PictureBox();
+            this.likersBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.nameLabel3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.linkByGenderFemale = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,7 +58,6 @@ namespace WindowsFormsApplication1
             this.labelSlash = new System.Windows.Forms.Label();
             this.linkAllGenders = new System.Windows.Forms.LinkLabel();
             this.listLikers = new System.Windows.Forms.ListBox();
-            this.likersBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBoxStatusInfo = new System.Windows.Forms.GroupBox();
             this.panelChosenPost = new System.Windows.Forms.Panel();
             this.pictureURLLinkLabel = new System.Windows.Forms.LinkLabel();
@@ -60,9 +65,6 @@ namespace WindowsFormsApplication1
             this.createdTimeLabel1 = new System.Windows.Forms.Label();
             this.messageLabel1 = new System.Windows.Forms.Label();
             this.linkLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.imageSquarePictureBox = new System.Windows.Forms.PictureBox();
-            this.nameLabel3 = new System.Windows.Forms.Label();
             this.listStatuses = new System.Windows.Forms.ListBox();
             this.linkFetchStatuses = new System.Windows.Forms.LinkLabel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -93,8 +95,9 @@ namespace WindowsFormsApplication1
             this.buttonSetStatus = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.panelPostStatus = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.imageSquarePictureBox1 = new System.Windows.Forms.PictureBox();
+            this.nameLabel4 = new System.Windows.Forms.Label();
             nameLabel = new System.Windows.Forms.Label();
             lastNameLabel = new System.Windows.Forms.Label();
             firstNameLabel = new System.Windows.Forms.Label();
@@ -106,18 +109,20 @@ namespace WindowsFormsApplication1
             ((System.ComponentModel.ISupportInitialize)(this.UserPictureBox)).BeginInit();
             this.panelUserDataPanel.SuspendLayout();
             this.groupBoxLikes.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageSquarePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.likersBindingSource)).BeginInit();
             this.groupBoxStatusInfo.SuspendLayout();
             this.panelChosenPost.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusesBindingSource)).BeginInit();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imageSquarePictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panelChosenFriendExtendedDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageNormalPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.friendsBindingSource)).BeginInit();
             this.panelPostActivityData.SuspendLayout();
             this.panelPostStatus.SuspendLayout();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageSquarePictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -234,9 +239,9 @@ namespace WindowsFormsApplication1
             // 
             this.panelUserDataPanel.BackColor = System.Drawing.Color.AliceBlue;
             this.panelUserDataPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelUserDataPanel.Controls.Add(this.panel3);
             this.panelUserDataPanel.Controls.Add(this.groupBoxLikes);
             this.panelUserDataPanel.Controls.Add(this.groupBoxStatusInfo);
-            this.panelUserDataPanel.Controls.Add(this.panel2);
             this.panelUserDataPanel.Controls.Add(this.listStatuses);
             this.panelUserDataPanel.Controls.Add(this.linkFetchStatuses);
             this.panelUserDataPanel.Controls.Add(this.panel1);
@@ -251,7 +256,7 @@ namespace WindowsFormsApplication1
             this.panelUserDataPanel.Controls.Add(this.ListYearOrMonthNumOfFriends);
             this.panelUserDataPanel.Location = new System.Drawing.Point(12, 75);
             this.panelUserDataPanel.Name = "panelUserDataPanel";
-            this.panelUserDataPanel.Size = new System.Drawing.Size(871, 531);
+            this.panelUserDataPanel.Size = new System.Drawing.Size(871, 560);
             this.panelUserDataPanel.TabIndex = 7;
             this.panelUserDataPanel.Visible = false;
             // 
@@ -259,6 +264,7 @@ namespace WindowsFormsApplication1
             // 
             this.groupBoxLikes.Controls.Add(this.textBox1);
             this.groupBoxLikes.Controls.Add(this.label5);
+            this.groupBoxLikes.Controls.Add(this.panel2);
             this.groupBoxLikes.Controls.Add(this.label4);
             this.groupBoxLikes.Controls.Add(this.linkByGenderFemale);
             this.groupBoxLikes.Controls.Add(this.label2);
@@ -272,6 +278,53 @@ namespace WindowsFormsApplication1
             this.groupBoxLikes.TabIndex = 39;
             this.groupBoxLikes.TabStop = false;
             this.groupBoxLikes.Text = "Likes";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(57, 37);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(113, 20);
+            this.textBox1.TabIndex = 44;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 40);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 13);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "Name:";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.imageSquarePictureBox);
+            this.panel2.Controls.Add(this.nameLabel3);
+            this.panel2.Location = new System.Drawing.Point(204, 40);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(195, 147);
+            this.panel2.TabIndex = 36;
+            // 
+            // imageSquarePictureBox
+            // 
+            this.imageSquarePictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.likersBindingSource, "ImageSquare", true));
+            this.imageSquarePictureBox.Location = new System.Drawing.Point(3, 21);
+            this.imageSquarePictureBox.Name = "imageSquarePictureBox";
+            this.imageSquarePictureBox.Size = new System.Drawing.Size(64, 56);
+            this.imageSquarePictureBox.TabIndex = 7;
+            this.imageSquarePictureBox.TabStop = false;
+            // 
+            // likersBindingSource
+            // 
+            this.likersBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
+            // 
+            // nameLabel3
+            // 
+            this.nameLabel3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.likersBindingSource, "Name", true));
+            this.nameLabel3.Location = new System.Drawing.Point(73, 64);
+            this.nameLabel3.Name = "nameLabel3";
+            this.nameLabel3.Size = new System.Drawing.Size(100, 23);
+            this.nameLabel3.TabIndex = 11;
             // 
             // label4
             // 
@@ -342,10 +395,6 @@ namespace WindowsFormsApplication1
             this.listLikers.Size = new System.Drawing.Size(164, 134);
             this.listLikers.TabIndex = 35;
             // 
-            // likersBindingSource
-            // 
-            this.likersBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
-            // 
             // groupBoxStatusInfo
             // 
             this.groupBoxStatusInfo.Controls.Add(this.panelChosenPost);
@@ -409,32 +458,6 @@ namespace WindowsFormsApplication1
             this.linkLinkLabel.Name = "linkLinkLabel";
             this.linkLinkLabel.Size = new System.Drawing.Size(255, 23);
             this.linkLinkLabel.TabIndex = 27;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.imageSquarePictureBox);
-            this.panel2.Controls.Add(this.nameLabel3);
-            this.panel2.Location = new System.Drawing.Point(662, 368);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(195, 147);
-            this.panel2.TabIndex = 36;
-            // 
-            // imageSquarePictureBox
-            // 
-            this.imageSquarePictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.likersBindingSource, "ImageSquare", true));
-            this.imageSquarePictureBox.Location = new System.Drawing.Point(3, 21);
-            this.imageSquarePictureBox.Name = "imageSquarePictureBox";
-            this.imageSquarePictureBox.Size = new System.Drawing.Size(64, 56);
-            this.imageSquarePictureBox.TabIndex = 7;
-            this.imageSquarePictureBox.TabStop = false;
-            // 
-            // nameLabel3
-            // 
-            this.nameLabel3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.likersBindingSource, "Name", true));
-            this.nameLabel3.Location = new System.Drawing.Point(73, 64);
-            this.nameLabel3.Name = "nameLabel3";
-            this.nameLabel3.Size = new System.Drawing.Size(100, 23);
-            this.nameLabel3.TabIndex = 11;
             // 
             // listStatuses
             // 
@@ -736,29 +759,38 @@ namespace WindowsFormsApplication1
             this.panelPostStatus.Size = new System.Drawing.Size(428, 26);
             this.panelPostStatus.TabIndex = 49;
             // 
-            // label5
+            // panel3
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 40);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 13);
-            this.label5.TabIndex = 43;
-            this.label5.Text = "Name:";
+            this.panel3.Controls.Add(this.imageSquarePictureBox1);
+            this.panel3.Controls.Add(this.nameLabel4);
+            this.panel3.Location = new System.Drawing.Point(574, 315);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(225, 243);
+            this.panel3.TabIndex = 40;
             // 
-            // textBox1
+            // imageSquarePictureBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(57, 37);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(113, 20);
-            this.textBox1.TabIndex = 44;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.imageSquarePictureBox1.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.likersBindingSource, "ImageSquare", true));
+            this.imageSquarePictureBox1.Location = new System.Drawing.Point(3, 65);
+            this.imageSquarePictureBox1.Name = "imageSquarePictureBox1";
+            this.imageSquarePictureBox1.Size = new System.Drawing.Size(100, 50);
+            this.imageSquarePictureBox1.TabIndex = 7;
+            this.imageSquarePictureBox1.TabStop = false;
+            // 
+            // nameLabel4
+            // 
+            this.nameLabel4.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.likersBindingSource, "Name", true));
+            this.nameLabel4.Location = new System.Drawing.Point(3, 141);
+            this.nameLabel4.Name = "nameLabel4";
+            this.nameLabel4.Size = new System.Drawing.Size(100, 23);
+            this.nameLabel4.TabIndex = 11;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightCyan;
-            this.ClientSize = new System.Drawing.Size(890, 612);
+            this.ClientSize = new System.Drawing.Size(890, 635);
             this.Controls.Add(this.panelPostStatus);
             this.Controls.Add(this.checkBoxAutomaticLogin);
             this.Controls.Add(this.buttonLogin);
@@ -773,12 +805,12 @@ namespace WindowsFormsApplication1
             this.panelUserDataPanel.PerformLayout();
             this.groupBoxLikes.ResumeLayout(false);
             this.groupBoxLikes.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imageSquarePictureBox)).EndInit();
             this.groupBoxStatusInfo.ResumeLayout(false);
             this.panelChosenPost.ResumeLayout(false);
             this.panelChosenPost.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusesBindingSource)).EndInit();
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imageSquarePictureBox)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panelChosenFriendExtendedDetails.ResumeLayout(false);
@@ -789,6 +821,8 @@ namespace WindowsFormsApplication1
             this.panelPostActivityData.PerformLayout();
             this.panelPostStatus.ResumeLayout(false);
             this.panelPostStatus.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imageSquarePictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.likersBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -853,5 +887,8 @@ namespace WindowsFormsApplication1
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PictureBox imageSquarePictureBox1;
+        private System.Windows.Forms.Label nameLabel4;
     }
 }

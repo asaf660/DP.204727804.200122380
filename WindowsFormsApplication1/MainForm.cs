@@ -140,6 +140,8 @@ namespace WindowsFormsApplication1
             labelLastStatusValue.Text = string.Empty;
             labelLastPhotoValue.Text = string.Empty;
             labelLastVideoValue.Text = string.Empty;
+            likersBindingSource.Clear();
+            statusesBindingSource.Clear();
         }
 
         private void showUserData()
@@ -391,10 +393,10 @@ namespace WindowsFormsApplication1
 
         private void linkFetchStatuses_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            FacebookObjectCollection<Post> posts = null;
+            IEnumerable<Post> posts = null;
             listStatuses.DisplayMember = "DisplayText";
             BackgroundWorker fetchStatusesBackgroundWorker = new BackgroundWorker();
-            fetchStatusesBackgroundWorker.DoWork += (senderObject, args) => posts = m_LoggedInUser.Posts;
+            fetchStatusesBackgroundWorker.DoWork += (senderObject, args) => posts = m_LoggedInUser.Posts.Where((post) => post.From.Id == m_LoggedInUser.Id);
             fetchStatusesBackgroundWorker.RunWorkerCompleted += delegate(object senderObject, RunWorkerCompletedEventArgs args)
             {
                 List<PostProxy> postsForList = new List<PostProxy>();
@@ -406,6 +408,7 @@ namespace WindowsFormsApplication1
 
                 statusesBindingSource.DataSource = postsForList;
                 progressBarPostsActivity.Visible = false;
+                loadLikers();
             };
 
             progressBarPostsActivity.Visible = true;
@@ -413,6 +416,14 @@ namespace WindowsFormsApplication1
         }
 
         private void listStatuses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (statusesBindingSource.Count > 0)
+            {
+                loadLikers();
+            }
+        }
+
+        private void loadLikers()
         {
             listLikers.DisplayMember = "Name";
             likersBindingSource.DataSource = getAllFriendLikers();
@@ -460,7 +471,7 @@ namespace WindowsFormsApplication1
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            changeFilter("Gender", (user) => user.Name.Contains((sender as TextBox).Text));
+            changeFilter("Name", (user) => user.Name.Contains((sender as TextBox).Text));
         }
 
         //private void fetchStatusesBackgroundWorkerRunWorkerCompleted
